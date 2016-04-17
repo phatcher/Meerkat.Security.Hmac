@@ -4,7 +4,7 @@ Meerkat Security Hmac
 The [Meerkat.Security.Hmac](https://www.nuget.org/packages/Meerkat.Security.Hmac/) library is an implementation of HMAC authentication for ASP.NET MVC
 
 [![NuGet](https://img.shields.io/nuget/v/Meerkat.Security.Hmac.svg)](https://img.shields.io/nuget/v/Meerkat.Security.Hmac.svg)
-[![Build status](https://ci.appveyor.com/api/projects/status/ouvglmaox83bpyti/branch/master?svg=true)](https://ci.appveyor.com/project/PaulHatcher/csvreader/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/3a3t90hixblfii3p/branch/master?svg=true)](https://ci.appveyor.com/project/PaulHatcher/Meerkat.Security.Hmac/branch/master)
 
 
 Welcome to contributions from anyone.

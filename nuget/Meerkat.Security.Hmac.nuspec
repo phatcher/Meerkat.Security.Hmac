@@ -11,8 +11,9 @@
         <authors>Paul Hatcher</authors>
         <projectUrl>https://github.com/phatcher/Meerkat.Security.Hmac</projectUrl>
         <releaseNotes>@releaseNotes@</releaseNotes>
-        <tags>CSV</tags>
+        <tags>AspNet WebApi AspNetWebApi HMAC Security</tags>
         <dependencies>
+            <dependency id="Common.Logging.Core" version="3.3.1" />
         </dependencies>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
     </metadata>
