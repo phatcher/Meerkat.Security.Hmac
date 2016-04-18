@@ -8,11 +8,10 @@ namespace Meerkat.Caching
     /// </summary>
     public interface ICache
     {
-        //
-        // Summary:
-        //     Gets or sets a value in the cache by using the default indexer property for an
-        //     instance of the System.Runtime.Caching.MemoryCache class.
-        //
+        // <summary>
+        // Gets or sets a value in the cache by using the default indexer property for an
+        // instance of the System.Runtime.Caching.MemoryCache class.
+        // <summary>
         // Parameters:
         //   key:
         //     A unique identifier for the cache value to get or set.

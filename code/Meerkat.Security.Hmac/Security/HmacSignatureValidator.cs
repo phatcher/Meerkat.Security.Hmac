@@ -21,6 +21,14 @@ namespace Meerkat.Security
         private readonly ISecretRepository secretRepository;
         private readonly ICache objectCache;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="HmacSignatureCalculator"/> class.
+        /// </summary>
+        /// <param name="signatureCalculator"></param>
+        /// <param name="representationBuilder"></param>
+        /// <param name="secretRepository"></param>
+        /// <param name="objectCache"></param>
+        /// <param name="validityPeriod"></param>
         public HmacSignatureValidator(ISignatureCalculator signatureCalculator, 
             IMessageRepresentationBuilder representationBuilder,
             ISecretRepository secretRepository,
