@@ -50,7 +50,7 @@ namespace Meerkat.Net.Http
             var secret = secretRepository.ClientSecret(userName);
             if (secret == null)
             {
-                Logger.DebugFormat("No secret for client id {0}: {1}", userName, request.RequestUri);
+                Logger.WarnFormat("No secret for client id {0}: {1}", userName, request.RequestUri);
             }
             else
             {

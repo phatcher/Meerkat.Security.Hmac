@@ -16,6 +16,8 @@ namespace Meerkat.Security
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        private const string CacheRegion = "hmac";
+
         private readonly ISignatureCalculator signatureCalculator;
         private readonly IMessageRepresentationBuilder representationBuilder;
         private readonly ISecretRepository secretRepository;
@@ -120,7 +122,7 @@ namespace Meerkat.Security
             if (result)
             {
                 // Store valid signatures to avoid replay attack
-                objectCache.AddOrGetExisting(signature, userName, DateTimeOffset.UtcNow.AddMinutes(HmacAuthentication.ValidityPeriodInMinutes));
+                objectCache.Set(signature, userName, DateTimeOffset.UtcNow.AddMinutes(ValidityPeriod), CacheRegion);
             }
 
             // Return the signature validation.

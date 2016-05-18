@@ -32,6 +32,12 @@ namespace Meerkat.Test.Security
         }
 
         [Test]
+        public void ValidityPeriod()
+        {
+            Assert.That(validator.ValidityPeriod, Is.EqualTo(5));
+        }
+
+        [Test]
         public async Task NonHmacAuthenticationScheme()
         {
             var request = new HttpRequestMessage();
@@ -135,6 +141,8 @@ namespace Meerkat.Test.Security
             signatureCalculator.Setup(x => x.Signature(It.IsAny<string>(), It.IsAny<string>())).Returns("PQRS");
 
             var candidate = await validator.IsValid(request);
+
+            cache.Setup(x => x.Set(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<DateTimeOffset>(), "hmac"));
 
             Assert.That(candidate, Is.EqualTo(true));
         }

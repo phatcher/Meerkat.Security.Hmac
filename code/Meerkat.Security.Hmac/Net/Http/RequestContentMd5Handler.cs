@@ -19,6 +19,7 @@ namespace Meerkat.Net.Http
             await request.Content.AssignMd5Hash();
 
             var response = await base.SendAsync(request, cancellationToken);
+
             return response;
         }
     }

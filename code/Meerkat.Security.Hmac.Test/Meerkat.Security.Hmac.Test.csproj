@@ -30,6 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Meerkat.Caching, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Meerkat.Caching.1.0.0\lib\net45\Meerkat.Caching.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
@@ -55,8 +63,8 @@
     <Compile Include="Net\Http\CustomHeaderFixture.cs" />
     <Compile Include="Net\Http\Md5Fixture.cs" />
     <Compile Include="Net\Http\RequestHeaderFixture.cs" />
+    <Compile Include="Net\Http\TestHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Caching\MemoryObjectCacheFixture.cs" />
     <Compile Include="Security\HmacAuthenticatorFixture.cs" />
     <Compile Include="Security\HmacSignatureCalculatorFixture.cs" />
     <Compile Include="Security\HmacSignatureValidatorFixture.cs" />
