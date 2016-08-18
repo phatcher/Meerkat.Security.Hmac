@@ -39,8 +39,8 @@
       <HintPath>..\..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Meerkat.Caching, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Meerkat.Caching.1.0.0\lib\net45\Meerkat.Caching.dll</HintPath>
+    <Reference Include="Meerkat.Caching, Version=1.0.3.0, Culture=neutral, PublicKeyToken=ac4b64546145efb9, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Meerkat.Caching.1.0.3\lib\net45\Meerkat.Caching.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -80,7 +80,9 @@
     <Compile Include="Security\SecretStore.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
