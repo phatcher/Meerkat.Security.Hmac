@@ -1,3 +1,6 @@
+#### 1.0.3 (2016-08-18)
+* Change to use signed version of Meerkat.Caching
+
 #### 1.0.2 (2016-05-18)
 * Change to using Meerkat.Caching
 * Minor internal refactoring
