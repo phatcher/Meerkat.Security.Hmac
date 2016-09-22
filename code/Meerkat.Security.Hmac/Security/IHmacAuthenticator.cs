@@ -12,8 +12,8 @@ namespace Meerkat.Security
         /// <summary>
         /// Attempts to authenticate a request using HMAC.
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <param name="request">Request to authenticate</param>
+        /// <returns>If using HMAC and the signature validates an authenticated principal, otherwise null.</returns>
         Task<IPrincipal> Authenticate(HttpRequestMessage request);
     }
 }

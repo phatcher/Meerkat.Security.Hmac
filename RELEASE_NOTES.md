@@ -1,3 +1,6 @@
+#### 1.1 (2016-09-22)
+* Introduce IRequestClaimsProvider to provide Claims once the signature has been validated
+
 #### 1.0.3 (2016-08-18)
 * Change to use signed version of Meerkat.Caching
 
