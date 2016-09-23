@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 using Common.Logging;
+
 using Meerkat.Caching;
 using Meerkat.Net.Http;
 
@@ -24,7 +25,7 @@ namespace Meerkat.Security
         private readonly ICache objectCache;
 
         /// <summary>
-        /// Creates a new instance of the <see cref="HmacSignatureCalculator"/> class.
+        /// Creates a new instance of the <see cref="HmacSignatureValidator"/> class.
         /// </summary>
         /// <param name="signatureCalculator"></param>
         /// <param name="representationBuilder"></param>
@@ -91,7 +92,7 @@ namespace Meerkat.Security
 
             if (!await request.Content.IsMd5Valid())
             {
-                // Invalid MD5 is correct, so no
+                // MD5 is invalid, so no
                 Logger.DebugFormat("Invalid MD5 hash: {0}", request.RequestUri);
                 return false;
             }

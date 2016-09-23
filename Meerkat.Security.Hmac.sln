@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meerkat.Security.Hmac", "code\Meerkat.Security.Hmac\Meerkat.Security.Hmac.csproj", "{D724FF9B-D546-4482-9CCF-9C36578BA97A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meerkat.Security.Hmac.Test", "code\Meerkat.Security.Hmac.Test\Meerkat.Security.Hmac.Test.csproj", "{A1A05ECA-3E6B-41CF-9FD8-B42FD6352EA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meerkat.Security.Hmac.WebApi", "code\Meerkat.Security.Hmac.WebApi\Meerkat.Security.Hmac.WebApi.csproj", "{A1ABF20A-62AE-4596-A9EF-2D87A02F98AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Web", "code\Sample.Web\Sample.Web.csproj", "{9DA59EB2-8ED2-40D0-9E0B-435CF3318731}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Client", "code\Sample.Client\Sample.Client.csproj", "{CB3001B2-F4BC-4133-95E0-3F1183E00CDA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,18 @@ Global
 		{A1A05ECA-3E6B-41CF-9FD8-B42FD6352EA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1A05ECA-3E6B-41CF-9FD8-B42FD6352EA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1A05ECA-3E6B-41CF-9FD8-B42FD6352EA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1ABF20A-62AE-4596-A9EF-2D87A02F98AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1ABF20A-62AE-4596-A9EF-2D87A02F98AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1ABF20A-62AE-4596-A9EF-2D87A02F98AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1ABF20A-62AE-4596-A9EF-2D87A02F98AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DA59EB2-8ED2-40D0-9E0B-435CF3318731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DA59EB2-8ED2-40D0-9E0B-435CF3318731}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DA59EB2-8ED2-40D0-9E0B-435CF3318731}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DA59EB2-8ED2-40D0-9E0B-435CF3318731}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB3001B2-F4BC-4133-95E0-3F1183E00CDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB3001B2-F4BC-4133-95E0-3F1183E00CDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB3001B2-F4BC-4133-95E0-3F1183E00CDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB3001B2-F4BC-4133-95E0-3F1183E00CDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

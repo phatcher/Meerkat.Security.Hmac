@@ -11,8 +11,8 @@ namespace Meerkat.Security
         /// <summary>
         /// Attempts to validate a request signature.
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <param name="request">Request to use</param>
+        /// <returns>true if the signature is valid, otherwise false</returns>
         Task<bool> IsValid(HttpRequestMessage request);
     }
 }

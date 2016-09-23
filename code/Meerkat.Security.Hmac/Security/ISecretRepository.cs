@@ -6,10 +6,10 @@
     public interface ISecretRepository
     {
         /// <summary>
-        /// Obtain the secret for the user.
+        /// Obtain the secret for the client.
         /// </summary>
-        /// <param name="userName"></param>
+        /// <param name="clientId"></param>
         /// <returns></returns>
-        string ClientSecret(string userName);
+        string ClientSecret(string clientId);
     }
 }

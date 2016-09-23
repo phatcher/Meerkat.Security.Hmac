@@ -6,11 +6,11 @@
     public interface ISignatureCalculator
     {
         /// <summary>
-        /// Given a secet and a value, compute a signature
+        /// Given a secret and a value, compute a signature
         /// </summary>
-        /// <param name="secret"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="secret">Secret to use</param>
+        /// <param name="value">Value to use</param>
+        /// <returns>Computed signature from the value and the secret</returns>
         string Signature(string secret, string value);
     }
 }

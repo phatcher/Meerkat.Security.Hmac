@@ -67,6 +67,7 @@ Target "Pack" (fun _ ->
           Publish = hasBuildParam "nugetkey" }
 
     NuGet nugetParams "nuget/Meerkat.Security.Hmac.nuspec"
+    NuGet nugetParams "nuget/Meerkat.Security.Hmac.WebApi.nuspec"
 )
 
 Target "Release" (fun _ ->

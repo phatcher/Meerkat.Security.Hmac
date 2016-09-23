@@ -6,8 +6,5 @@
         public const string AuthenticationScheme = AuthenticationSchemePrefix + "SHA256";
         public const string ClientIdHeader = "x-msec-clientid";
         public const string CustomHeaders = "x-msec-headers";
-
-        // TODO: Configuration property
-        public const int ValidityPeriodInMinutes = 5;
     }
 }
