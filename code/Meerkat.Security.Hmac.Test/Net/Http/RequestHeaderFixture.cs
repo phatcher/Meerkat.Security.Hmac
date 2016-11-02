@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
 using Meerkat.Net.Http;
 
@@ -14,7 +15,7 @@ namespace Meerkat.Test.Net.Http
         {
             var message = new HttpRequestMessage();
 
-            var candidate = message.Headers.GetFirstOrDefaultValue<string>("test");
+            var candidate = message.Headers.GetValues<string>("test").FirstOrDefault();
 
             Assert.That(candidate, Is.Null);
         }
@@ -24,7 +25,7 @@ namespace Meerkat.Test.Net.Http
         {
             var message = new HttpRequestMessage();
 
-            var candidate = message.Headers.GetFirstOrDefaultValue<int>("test");
+            var candidate = message.Headers.GetValues<int>("test").FirstOrDefault();
 
             Assert.That(candidate, Is.EqualTo(0));
         }
@@ -36,7 +37,7 @@ namespace Meerkat.Test.Net.Http
 
             message.Headers.Add("test", "A");
 
-            var candidate = message.Headers.GetFirstOrDefaultValue<string>("test");
+            var candidate = message.Headers.GetValues<string>("test").FirstOrDefault();
 
             Assert.That(candidate, Is.EqualTo("A"));
         }
@@ -48,9 +49,24 @@ namespace Meerkat.Test.Net.Http
 
             message.Headers.Add("test", new [] { "A", "B", "C" });
 
-            var candidate = message.Headers.GetFirstOrDefaultValue<string>("test");
+            var candidate = message.Headers.GetValues<string>("test").FirstOrDefault();
 
             Assert.That(candidate, Is.EqualTo("A"));
+        }
+
+        [Test]
+        public void MultipleValuesPresent()
+        {
+            var message = new HttpRequestMessage();
+
+            message.Headers.Add("test", new[] { "A", "B", "C" });
+
+            var candidate = message.Headers.GetValues<string>("test").ToList();
+
+            Assert.That(candidate.Count, Is.EqualTo(3));
+            Assert.That(candidate[0], Is.EqualTo("A"));
+            Assert.That(candidate[1], Is.EqualTo("B"));
+            Assert.That(candidate[2], Is.EqualTo("C"));
         }
 
         [Test]
@@ -60,7 +76,7 @@ namespace Meerkat.Test.Net.Http
 
             message.Headers.Add("test", "1");
 
-            var candidate = message.Headers.GetFirstOrDefaultValue<int>("test");
+            var candidate = message.Headers.GetValues<int>("test").FirstOrDefault();
 
             Assert.That(candidate, Is.EqualTo(1));
         }
@@ -74,7 +90,7 @@ namespace Meerkat.Test.Net.Http
 
             try
             {
-                message.Headers.GetFirstOrDefaultValue<int>("test");
+                message.Headers.GetValues<int>("test").FirstOrDefault();
             }
             catch (FormatException ex)
             {

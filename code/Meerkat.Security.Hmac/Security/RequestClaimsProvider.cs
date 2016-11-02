@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 
@@ -27,11 +28,13 @@ namespace Meerkat.Security
         /// </remarks>
         public IList<Claim> Claims(HttpRequestMessage request)
         {
-            var clientId = request.Headers.GetFirstOrDefaultValue<string>(HmacAuthentication.ClientIdHeader);
-            var claims = new List<Claim>
+            var claims = new List<Claim>();
+
+            // Make the clientId header the name, simple hook if no other claims are provided
+            var nameClaim = request.Headers.ToClaims(HmacAuthentication.ClientIdHeader, nameClaimType).FirstOrDefault();
+            if (nameClaim != null)
             {
-                // Make the clientId header the name, simple hook if no other claims are provided
-                new Claim(nameClaimType, clientId)
+                claims.Add(nameClaim);
             };
 
             return claims;

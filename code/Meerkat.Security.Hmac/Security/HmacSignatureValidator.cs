@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -74,7 +75,7 @@ namespace Meerkat.Security
                 return false;
             }
 
-            var userName = request.Headers.GetFirstOrDefaultValue<string>(HmacAuthentication.ClientIdHeader);
+            var userName = request.Headers.GetValues<string>(HmacAuthentication.ClientIdHeader).FirstOrDefault();
             if (string.IsNullOrEmpty(userName))
             {
                 // No user name

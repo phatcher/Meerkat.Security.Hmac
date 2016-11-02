@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -22,6 +23,12 @@ namespace Meerkat.Net.Http
         private readonly IMessageRepresentationBuilder representationBuilder;
         private readonly ISignatureCalculator signatureCalculator;
 
+        /// <summary>
+        /// Create a new instance of the <see cref="HmacSigningHandler"/> class.
+        /// </summary>
+        /// <param name="secretRepository"></param>
+        /// <param name="representationBuilder"></param>
+        /// <param name="signatureCalculator"></param>
         public HmacSigningHandler(ISecretRepository secretRepository,
                               IMessageRepresentationBuilder representationBuilder,
                               ISignatureCalculator signatureCalculator)
@@ -31,10 +38,16 @@ namespace Meerkat.Net.Http
             this.signatureCalculator = signatureCalculator;
         }
 
+        /// <summary>
+        /// Sends the message after adding the HMAC signature if a HMAC client id header is present.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             // Only try and sign if we have a user
-            var userName = request.Headers.GetFirstOrDefaultValue<string>(HmacAuthentication.ClientIdHeader);
+            var userName = request.Headers.GetValues<string>(HmacAuthentication.ClientIdHeader).FirstOrDefault();
             if (string.IsNullOrEmpty(userName))
             {
                 return base.SendAsync(request, cancellationToken);

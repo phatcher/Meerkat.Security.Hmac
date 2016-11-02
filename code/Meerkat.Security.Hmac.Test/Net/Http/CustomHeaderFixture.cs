@@ -58,5 +58,21 @@ namespace Meerkat.Test.Net.Http
 
             Assert.That(candidate, Is.EqualTo("A\nB"));
         }
+
+        [Test]
+        public void MultipleHeaderValues()
+        {
+            var message = new HttpRequestMessage();
+
+            message.Headers.Add(HmacAuthentication.CustomHeaders, "test token");
+            message.Headers.Add("test", "A");
+            message.Headers.Add("test", "B");
+            message.Headers.Add("token", "C");
+            message.Headers.Add("token", "D");
+
+            var candidate = message.Headers.CustomHeadersRepresentation(HmacAuthentication.CustomHeaders);
+
+            Assert.That(candidate, Is.EqualTo("A, B\nC, D"));
+        }
     }
 }

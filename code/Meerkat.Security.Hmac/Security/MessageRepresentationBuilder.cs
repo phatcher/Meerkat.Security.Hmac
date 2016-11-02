@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
@@ -33,7 +34,7 @@ namespace Meerkat.Security
                 m => m.Method.Method,
                 m => m.Content.Md5Base64(),
                 m => m.Headers.MessageDate(),
-                m => m.Headers.GetFirstOrDefaultValue<string>(HmacAuthentication.ClientIdHeader),
+                m => m.Headers.GetValues<string>(HmacAuthentication.ClientIdHeader).FirstOrDefault(),
                 m => m.Headers.CustomHeadersRepresentation(HmacAuthentication.CustomHeaders),
             };
         }
