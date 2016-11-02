@@ -1,3 +1,7 @@
+#### 1.2 (2016-11-02)
+* Extend CustomHeadersRepresentation to handle multiple headers and also multiple values in a single header
+* Utility function to help for Claims for from request headers
+ 
 #### 1.1.1 (2016-09-23)
 * Introduce Meerkat.Security.Hmac.WebApi with HmacAuthorizeAttribute to authorize WebApi controllers
 
