@@ -20,8 +20,8 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
     </metadata>
     <files>
-        <file src="..\build\Meerkat.Security.Hmac.dll" target="lib\net45" />
-        <file src="..\build\Meerkat.Security.Hmac.pdb" target="lib\net45" />
-        <file src="..\build\Meerkat.Security.Hmac.xml" target="lib\net45" />
+        <file src="..\build\Meerkat.Security.Hmac.WebApi.dll" target="lib\net45" />
+        <file src="..\build\Meerkat.Security.Hmac.WebApi.pdb" target="lib\net45" />
+        <file src="..\build\Meerkat.Security.Hmac.WebApi.xml" target="lib\net45" />
     </files>
 </package>

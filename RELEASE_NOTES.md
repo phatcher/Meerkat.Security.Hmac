@@ -1,3 +1,6 @@
+#### 1.2.1 (2016-11-03)
+* Fix incorrect files in WebApi NuGet package
+
 #### 1.2 (2016-11-02)
 * Extend CustomHeadersRepresentation to handle multiple headers and also multiple values in a single header
 * Utility function to help for Claims for from request headers
