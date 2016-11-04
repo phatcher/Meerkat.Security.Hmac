@@ -34,12 +34,6 @@ namespace Meerkat.Net.Http
             }
         }
 
-        [Obsolete("Use headers.GetValues<T>(name).FirstOrDefault()")]
-        public static T GetFirstOrDefaultValue<T>(this HttpRequestHeaders headers, string name)
-        {
-            return headers.GetValues<T>(name).FirstOrDefault();
-        }
-
         /// <summary>
         /// Get the request date as a string if present.
         /// </summary>
@@ -53,7 +47,8 @@ namespace Meerkat.Net.Http
             }
             var date = headers.Date.Value.UtcDateTime;
 
-            return date.ToString("u");
+            // Use RFC 1123 so we are the same as the header value.
+            return date.ToString("r");
         }
 
         /// <summary>

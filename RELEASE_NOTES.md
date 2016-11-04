@@ -1,3 +1,6 @@
+#### 1.2.2 (2016-11-04)
+* Change date format in message representation to RFC 1123, simplifies implementation for other languages as message date header is already in this format.
+
 #### 1.2.1 (2016-11-03)
 * Fix incorrect files in WebApi NuGet package
 

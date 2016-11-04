@@ -122,7 +122,7 @@ namespace Meerkat.Test.Net.Http
 
             var candidate = message.Headers.MessageDate();
 
-            Assert.That(candidate, Is.EqualTo(date.ToString("u")));
+            Assert.That(candidate, Is.EqualTo(date.ToString("r")));
         }
 
         [Test]
