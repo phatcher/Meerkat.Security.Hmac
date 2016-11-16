@@ -20,7 +20,15 @@ namespace Meerkat.Security
         /// <copydoc cref="ISecretStore.Assign" />
         public void Assign(string clientId, string secret)
         {
-            secrets[clientId] = secret;
+            if (string.IsNullOrEmpty(secret))
+            {
+                string value;
+                secrets.TryRemove(clientId, out value);
+            }
+            else
+            {
+                secrets[clientId] = secret;
+            }
         }
 
         /// <copydoc cref="ISecretRepository.ClientSecret" />

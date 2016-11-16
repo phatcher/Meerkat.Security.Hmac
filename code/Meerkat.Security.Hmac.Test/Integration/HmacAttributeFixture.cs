@@ -22,13 +22,13 @@ namespace Meerkat.Test.Integration
         [Test]
         public async Task SecureNoHmac()
         {
-            await OnSecureNoHmac();
+            await OnSecureNoHmac(500);
         }
 
         [Test]
         public async Task InvalidClientId()
         {
-            await OnInvalidClientId();
+            await OnInvalidClientId(401);
         }
 
         //[Test]

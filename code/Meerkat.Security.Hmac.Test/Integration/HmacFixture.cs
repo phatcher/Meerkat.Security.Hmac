@@ -14,15 +14,7 @@ namespace Meerkat.Test.Integration
 {
     public class HmacFixture
     {
-        protected IUnityContainer Container
-        {
-            get { return Sample.Web.UnityConfig.GetConfiguredContainer(); }
-        }
-
-        protected ISecretStore SecretStore
-        {
-            get { return Container.Resolve<ISecretStore>(); }
-        }
+        protected IUnityContainer Container { get; set; }
 
         public async Task OnAllowAnonymous()
         {
@@ -41,7 +33,7 @@ namespace Meerkat.Test.Integration
         {
             using (var server = TestServer.Create<Sample.Web.Startup>())
             {
-                SecretStore.Assign("1234", "1234");
+                AssignSecret("1234", "1234", true);
 
                 var client = HmacClient(server.Handler);
                 var request = RequestMessage("/api/values/secure", "1234");
@@ -52,7 +44,7 @@ namespace Meerkat.Test.Integration
             }
         }
 
-        public async Task OnSecureNoHmac()
+        public async Task OnSecureNoHmac(int status)
         {
             using (var server = TestServer.Create<Sample.Web.Startup>())
             {
@@ -61,31 +53,34 @@ namespace Meerkat.Test.Integration
                 var response = await client.SendAsync(request);
 
                 // TODO: Why 500 rather than 401?
-                Assert.That((int)response.StatusCode, Is.EqualTo(500), "Status code differs");
+                Assert.That((int)response.StatusCode, Is.EqualTo(status), "Status code differs");
                 //Assert.That(await response.Content.ReadAsStringAsync(), Is.EqualTo("[\"C\",\"D\"]"), "Content differs");
             }
         }
 
-        public async Task OnInvalidClientId()
+        public async Task OnInvalidClientId(int status)
         {
             using (var server = TestServer.Create<Sample.Web.Startup>())
             {
+                // We sign it, but the server doesn't know this client id
+                AssignSecret("1234", "1234", false);
+
                 var client = HmacClient(server.Handler);
                 var request = RequestMessage("/api/values/secure", "1234");
                 var response = await client.SendAsync(request);
 
                 // TODO: Why 500 rather than 401?
-                Assert.That((int)response.StatusCode, Is.EqualTo(500), "Status code differs");
+                Assert.That((int)response.StatusCode, Is.EqualTo(status), "Status code differs");
                 //Assert.That(await response.Content.ReadAsStringAsync(), Is.EqualTo("[\"C\",\"D\"]"), "Content differs");
             }
         }
 
         public async Task OnReplayAttack()
         {
-            SecretStore.Assign("1234", "1234");
-
             using (var server = TestServer.Create<Sample.Web.Startup>())
             {
+                AssignSecret("1234", "1234", true);
+
                 var client = HmacClient(server.Handler);
                 var request = RequestMessage("/api/values/secure", "1234");
                 var response = await client.SendAsync(request);
@@ -106,10 +101,10 @@ namespace Meerkat.Test.Integration
 
         public async Task OnMessageDateTooEarly()
         {
-            SecretStore.Assign("1234", "1234");
-
             using (var server = TestServer.Create<Sample.Web.Startup>())
             {
+                AssignSecret("1234", "1234", true);
+
                 var client = HmacClient(server.Handler);
                 var request = RequestMessage("/api/values/secure", "1234");
                 request.Headers.Date = DateTimeOffset.UtcNow.AddHours(-2);
@@ -123,10 +118,10 @@ namespace Meerkat.Test.Integration
 
         public async Task OnMessageDateTooLate()
         {
-            SecretStore.Assign("1234", "1234");
-
             using (var server = TestServer.Create<Sample.Web.Startup>())
             {
+                AssignSecret("1234", "1234", true);
+
                 var client = HmacClient(server.Handler);
                 var request = RequestMessage("/api/values/secure", "1234");
                 request.Headers.Date = DateTimeOffset.UtcNow.AddHours(2);
@@ -141,20 +136,35 @@ namespace Meerkat.Test.Integration
         public virtual void SetUp()
         {
             // NB Need this to ensure we don't retain state between tests
+            Container = new UnityContainer();
+            Sample.Web.UnityConfig.RegisterHmacCore(Container);
+            Container.RegisterType<HmacSigningHandler, HmacSigningHandler>();
+
+            // Wipe down the server container
             Sample.Web.Startup.Reset();
 
             // Standard behaviour
             Sample.Web.Startup.UseMvc = false;
             Sample.Web.Startup.UseOwinHmac = false;
-
-            // Register sso we can sign the message
-            Container.RegisterType<HmacSigningHandler, HmacSigningHandler>();
         }
 
         [TearDown]
         public virtual void TearDown()
         {
+            Container = null;
             Sample.Web.Startup.Reset();
+        }
+
+        private void AssignSecret(string clientId, string secret, bool storeServer)
+        {
+            var localStore = Container.Resolve<ISecretStore>();
+            localStore.Assign(clientId, secret);
+
+            if (storeServer)
+            {
+                var serverStore = Sample.Web.UnityConfig.GetConfiguredContainer().Resolve<ISecretStore>();
+                serverStore.Assign(clientId, secret);
+            }
         }
 
         private HttpRequestMessage RequestMessage(string url, string clientId = null, bool addNonce = false)
