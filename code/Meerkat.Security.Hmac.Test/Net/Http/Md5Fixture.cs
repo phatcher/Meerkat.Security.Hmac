@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+
 using Meerkat.Net.Http;
+
 using NUnit.Framework;
 
 namespace Meerkat.Test.Net.Http

@@ -1,39 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace Sample.Web.Controllers
 {
     public class ValuesController : ApiController
     {
-        // GET api/values
-        public IEnumerable<string> Get()
+        [HttpGet]
+        public IHttpActionResult Secure()
         {
-            return new string[] { "value1", "value2" };
+            if (User.Identity.IsAuthenticated == false)
+            {
+                return Unauthorized();
+            }
+            return Ok(new [] { "A", "B" });
         }
 
-        // GET api/values/5
-        public string Get(int id)
+        [AllowAnonymous]
+        [HttpGet]
+        public IHttpActionResult Insecure()
         {
-            return "value";
+            return Ok(new[] { "C", "D" });
         }
 
-        // POST api/values
-        public void Post([FromBody]string value)
+        [HttpPost]
+        public IHttpActionResult Post(string value)
         {
-        }
+            if (User.Identity.IsAuthenticated == false)
+            {
+                return Unauthorized();
+            }
 
-        // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        public void Delete(int id)
-        {
+            return Ok(1);
         }
     }
 }

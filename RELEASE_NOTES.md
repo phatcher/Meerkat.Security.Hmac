@@ -1,3 +1,8 @@
+#### 2.0.0 (2016-11-17)
+* Introduced Owin middleware component, HmacAuthorizeAttribute is invoked too late to amend the claims using ClaimsTransformer in the Owin pipeline.
+* Breaking change - Changed interface of IHmacAuthenticator to return ClaimsIdentity, simplifies Owin integration.
+* Breaking change - Introduce SignatureValidator.ClockDrift property to  to split cache duration from client/server clock drift.
+
 #### 1.2.2 (2016-11-04)
 * Change date format in message representation to RFC 1123, simplifies implementation for other languages as message date header is already in this format.
 

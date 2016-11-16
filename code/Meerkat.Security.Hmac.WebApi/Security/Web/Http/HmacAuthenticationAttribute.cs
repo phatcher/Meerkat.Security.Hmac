@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http.Filters;
@@ -34,15 +35,15 @@ namespace Meerkat.Security.Web.Http
             }
 
             var authenticator = GetService<IHmacAuthenticator>(context);
-            var principal = await authenticator.Authenticate(request);
-            if (principal == null)
+            var identity = await authenticator.Authenticate(request);
+            if (identity == null)
             {
                 // Authentication was attempted but failed. Set ErrorResult to indicate an error.
                 context.ErrorResult = new AuthenticationFailureResult("Invalid signature", request);
                 return;
             }
 
-            context.Principal = principal;
+            context.Principal = new ClaimsPrincipal(identity);
         }
 
         public Task ChallengeAsync(HttpAuthenticationChallengeContext context, CancellationToken cancellationToken)

@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Threading.Tasks;
 
 namespace Meerkat.Security
 {
     /// <summary>
-    /// Validates a HMAC encoded message, creating a <see cref="IPrincipal"/> with claims provided by a <see cref="IRequestClaimsProvider"/>.
+    /// Validates a HMAC encoded message, creating a <see cref="ClaimsIdentity"/> with claims provided by a <see cref="IRequestClaimsProvider"/>.
     /// </summary>
     public class HmacAuthenticator : IHmacAuthenticator
     {
@@ -33,7 +32,7 @@ namespace Meerkat.Security
 
         /// <copydoc cref="IHmacAuthenticator.Authenticate" />
         /// <remarks>Enrichs the authenticated principal with claims provided by the <see cref="IRequestClaimsProvider"/></remarks>
-        public async Task<IPrincipal> Authenticate(HttpRequestMessage request)
+        public async Task<ClaimsIdentity> Authenticate(HttpRequestMessage request)
         {
             var authenticated = await validator.IsValid(request);
             if (authenticated == false)
@@ -46,9 +45,8 @@ namespace Meerkat.Security
             var claims = new List<Claim>(claimsProvider.Claims(request));
 
             var identity = new ClaimsIdentity(claims, HmacAuthentication.AuthenticationScheme, nameClaimType, roleNameType);
-            var principal = new ClaimsPrincipal(identity);
 
-            return principal;
+            return identity;
         }
     }
 }

@@ -33,22 +33,29 @@ namespace Meerkat.Security
         /// <param name="secretRepository"></param>
         /// <param name="objectCache"></param>
         /// <param name="validityPeriod"></param>
+        /// <param name="clockDrift"></param>
         public HmacSignatureValidator(ISignatureCalculator signatureCalculator, 
             IMessageRepresentationBuilder representationBuilder,
             ISecretRepository secretRepository,
             ICache objectCache,
-            int validityPeriod)
+            int validityPeriod,            
+            int clockDrift)
         {
             this.secretRepository = secretRepository;
             this.representationBuilder = representationBuilder;
             this.signatureCalculator = signatureCalculator;
             this.objectCache = objectCache;
             ValidityPeriod = validityPeriod;
+            ClockDrift = clockDrift;
         }
 
         /// <summary>
-        /// Gets the validity period of a signature in minutes, used to allow for clock-drift between client and server
-        /// and also to avoid replay attacks
+        /// Get the allowable clock drift between server and client in minutes.
+        /// </summary>
+        public int ClockDrift { get; }
+
+        /// <summary>
+        /// Gets the validity period of a signature in minutes, used to avoid replay attacks.
         /// </summary>
         public int ValidityPeriod { get; }
 
@@ -67,7 +74,7 @@ namespace Meerkat.Security
                 return false;
             }
 
-            var isDateValid = request.IsMessageDateValid(ValidityPeriod);
+            var isDateValid = request.IsMessageDateValid(ClockDrift);
             if (!isDateValid)
             {
                 // Date is not present or valid

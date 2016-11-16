@@ -198,7 +198,7 @@ namespace Meerkat.Test.Security
             secretRepository = new Mock<ISecretRepository>();
             cache = new Mock<ICache>();
 
-            validator = new HmacSignatureValidator(signatureCalculator.Object, representationBuilder.Object, secretRepository.Object, cache.Object, 5);
+            validator = new HmacSignatureValidator(signatureCalculator.Object, representationBuilder.Object, secretRepository.Object, cache.Object, 5, 5);
         }
     }
 }

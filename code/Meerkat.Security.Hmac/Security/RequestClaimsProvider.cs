@@ -7,7 +7,9 @@ using Meerkat.Net.Http;
 
 namespace Meerkat.Security
 {
-    /// <copydoc cref="IRequestClaimsProvider" />
+    /// <summary>
+    /// Basic request claims provider that converts the <see cref="P:HmacAuthentication.ClientIdHeader"/> header into a claim.
+    /// </summary>
     public class RequestClaimsProvider : IRequestClaimsProvider
     {
         private readonly string nameClaimType;

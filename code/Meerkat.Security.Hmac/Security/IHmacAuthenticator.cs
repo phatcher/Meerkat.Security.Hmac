@@ -1,5 +1,5 @@
 ﻿using System.Net.Http;
-using System.Security.Principal;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Meerkat.Security
@@ -13,7 +13,7 @@ namespace Meerkat.Security
         /// Attempts to authenticate a request using HMAC.
         /// </summary>
         /// <param name="request">Request to authenticate</param>
-        /// <returns>If using HMAC and the signature validates an authenticated principal, otherwise null.</returns>
-        Task<IPrincipal> Authenticate(HttpRequestMessage request);
+        /// <returns>If using HMAC and the signature validates an authenticated identity, otherwise null.</returns>
+        Task<ClaimsIdentity> Authenticate(HttpRequestMessage request);
     }
 }

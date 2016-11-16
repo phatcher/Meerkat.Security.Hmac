@@ -1,7 +1,7 @@
 ﻿namespace Meerkat.Security
 {
     /// <summary>
-    /// Resposnsible for assigning secrets to clients
+    /// Responsible for assigning secrets to clients
     /// </summary>
     public interface ISecretStore
     {

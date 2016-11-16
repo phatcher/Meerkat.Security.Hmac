@@ -1,6 +1,11 @@
 using System;
+
+using Meerkat.Caching;
+using Meerkat.Security;
+
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.Configuration;
+using Sample.Web.Services;
 
 namespace Sample.Web
 {
@@ -9,19 +14,51 @@ namespace Sample.Web
     /// </summary>
     public class UnityConfig
     {
+        private static object syslock = new object();
         private static Lazy<IUnityContainer> container = new Lazy<IUnityContainer>(() =>
         {
-            var container = new UnityContainer();
-            RegisterTypes(container);
-            return container;
+            return ConfigureContainer();
         });
 
+        private static IUnityContainer c;
+        
         /// <summary>
         /// Gets the configured Unity container.
         /// </summary>
         public static IUnityContainer GetConfiguredContainer()
         {
-            return container.Value;
+            return Container;
+        }
+
+        public static IUnityContainer Container
+        {
+            get
+            {
+                if (c != null)
+                {
+                    return c;
+                }
+
+                lock (syslock)
+                {
+                    return c ?? (c = ConfigureContainer());
+                }
+            }
+            set
+            {
+                lock (syslock)
+                {
+                    c = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get the service locator from the container
+        /// </summary>
+        public static IServiceLocator ServiceLocator
+        {
+            get { return GetConfiguredContainer().Resolve<IServiceLocator>(); }
         }
 
         /// <summary>Registers the type mappings with the Unity container.</summary>
@@ -30,11 +67,50 @@ namespace Sample.Web
         /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
         public static void RegisterTypes(IUnityContainer container)
         {
-            // NOTE: To load from web.config uncomment the line below. Make sure to add a Microsoft.Practices.Unity.Configuration to the using statements.
-            // container.LoadConfiguration();
+            container.RegisterType<ICache>(
+                new InjectionFactory(x => MemoryObjectCacheFactory.Default()));
 
-            // TODO: Register your types here
-            // container.RegisterType<IProductRepository, ProductRepository>();
+            // Secret store as singleton
+            container.RegisterType<SecretStore>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ISecretRepository, SecretStore>();
+            container.RegisterType<ISecretStore, SecretStore>();
+
+            container.RegisterType<IMessageRepresentationBuilder, MessageRepresentationBuilder>();
+
+            container.RegisterType<ISignatureCalculator, HmacSignatureCalculator>();
+
+            container.RegisterType<ISignatureValidator, HmacSignatureValidator>(
+                new InjectionConstructor(
+                    new ResolvedParameter<ISignatureCalculator>(),
+                    new ResolvedParameter<IMessageRepresentationBuilder>(),
+                    new ResolvedParameter<ISecretRepository>(),
+                    new ResolvedParameter<ICache>(),
+                    // Clock drift in minutes
+                    new InjectionParameter<int>(10),
+                    // Cache duration in minutes
+                    new InjectionParameter<int>(10)));
+
+            container.RegisterType<IRequestClaimsProvider, RequestClaimsProvider>(
+                new InjectionConstructor(
+                   // Names of the user name claim type
+                   new InjectionParameter("name")));
+
+            container.RegisterType<IHmacAuthenticator, HmacAuthenticator>(
+                new InjectionConstructor(
+                    new ResolvedParameter<ISignatureValidator>(),
+                    new ResolvedParameter<IRequestClaimsProvider>(),
+                    // Names of the user name and role claim types
+                    new InjectionParameter<string>("name"),
+                    new InjectionParameter<string>("role")));
+        }
+
+        private static IUnityContainer ConfigureContainer()
+        {
+            var container = new UnityContainer();
+            new MyUnityServiceLocator(container);
+
+            RegisterTypes(container);
+            return container;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
-using Meerkat.Net.Http;
 
+using Meerkat.Net.Http;
 using Meerkat.Security;
 
 using NUnit.Framework;

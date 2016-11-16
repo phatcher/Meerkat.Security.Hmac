@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net.Http;
+
 using Meerkat.Net.Http;
 
 using NUnit.Framework;

@@ -69,6 +69,7 @@ namespace Meerkat.Net.Http
             {
                 var signature = signatureCalculator.Signature(secret, representation);
 
+                // Ok, valid signature so add the authentication header
                 var header = new AuthenticationHeaderValue(HmacAuthentication.AuthenticationScheme, signature);
 
                 request.Headers.Authorization = header;

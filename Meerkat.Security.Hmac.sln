@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Client", "code\Sampl
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D14DFB16-6DAF-4AE8-8166-ACF3D0ADAF3E}"
 	ProjectSection(SolutionItems) = preProject
+		nuget\Meerkat.Security.Hmac.nuspec = nuget\Meerkat.Security.Hmac.nuspec
+		nuget\Meerkat.Security.Hmac.WebApi.nuspec = nuget\Meerkat.Security.Hmac.WebApi.nuspec
 		README.md = README.md
 		RELEASE_NOTES.md = RELEASE_NOTES.md
 	EndProjectSection

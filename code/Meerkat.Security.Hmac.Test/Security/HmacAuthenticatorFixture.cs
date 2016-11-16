@@ -31,9 +31,9 @@ namespace Meerkat.Test.Security
 
             // Assert
             Assert.That(candidate, Is.Not.Null);
-            Assert.That(candidate.Identity.IsAuthenticated, Is.EqualTo(true));
-            Assert.That(candidate.Identity.AuthenticationType, Is.EqualTo(HmacAuthentication.AuthenticationScheme));
-            Assert.That(candidate.Identity.Name, Is.EqualTo("test"));
+            Assert.That(candidate.IsAuthenticated, Is.EqualTo(true));
+            Assert.That(candidate.AuthenticationType, Is.EqualTo(HmacAuthentication.AuthenticationScheme));
+            Assert.That(candidate.Name, Is.EqualTo("test"));
         }
 
         [Test]
