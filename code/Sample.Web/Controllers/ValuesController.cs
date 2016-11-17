@@ -9,7 +9,8 @@ namespace Sample.Web.Controllers
         [HttpGet]
         public IHttpActionResult Secure()
         {
-            if (User.Identity.IsAuthenticated == false)
+            // NB Not sure why User is null - thoughy default principal would be assigned.
+            if (User == null || User.Identity.IsAuthenticated == false)
             {
                 return Unauthorized();
             }
@@ -24,14 +25,14 @@ namespace Sample.Web.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult Post(string value)
+        public int Post(string value)
         {
-            if (User.Identity.IsAuthenticated == false)
+            if (User == null || User.Identity.IsAuthenticated == false)
             {
-                return Unauthorized();
+                throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
 
-            return Ok(1);
+            return 1;
         }
     }
 }

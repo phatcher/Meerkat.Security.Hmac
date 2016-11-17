@@ -8,12 +8,7 @@ namespace Meerkat.Security.Web.Http
     {
         public static void ChallengeWith(this HttpAuthenticationChallengeContext context, string scheme)
         {
-            ChallengeWith(context, new AuthenticationHeaderValue(scheme));
-        }
-
-        public static void ChallengeWith(this HttpAuthenticationChallengeContext context, string scheme, string parameter)
-        {
-            ChallengeWith(context, new AuthenticationHeaderValue(scheme, parameter));
+            context.ChallengeWith(new AuthenticationHeaderValue(scheme));
         }
 
         public static void ChallengeWith(this HttpAuthenticationChallengeContext context, AuthenticationHeaderValue challenge)

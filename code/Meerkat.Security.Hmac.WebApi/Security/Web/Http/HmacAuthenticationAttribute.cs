@@ -48,14 +48,9 @@ namespace Meerkat.Security.Web.Http
 
         public Task ChallengeAsync(HttpAuthenticationChallengeContext context, CancellationToken cancellationToken)
         {
-            Challenge(context);
+            context.ChallengeWith(HmacAuthentication.AuthenticationScheme);
 
             return Task.FromResult(0);
-        }
-
-        private void Challenge(HttpAuthenticationChallengeContext context)
-        {
-            context.ChallengeWith(HmacAuthentication.AuthenticationScheme);
         }
 
         private T GetService<T>(HttpAuthenticationContext context)

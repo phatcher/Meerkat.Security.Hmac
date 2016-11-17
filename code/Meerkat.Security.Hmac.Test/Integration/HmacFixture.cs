@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 using Meerkat.Net.Http;
@@ -24,8 +25,10 @@ namespace Meerkat.Test.Integration
                 var request = RequestMessage("/api/values/insecure");
                 var response = await client.SendAsync(request);
 
+                var result = await response.Content.ReadAsStringAsync();
+                Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
                 Assert.That((int)response.StatusCode, Is.EqualTo(200), "Status code differs");
-                Assert.That(await response.Content.ReadAsStringAsync(), Is.EqualTo("[\"C\",\"D\"]"), "Content differs");
+                Assert.That(result, Is.EqualTo("[\"C\",\"D\"]"), "Content differs");
             }
         }
 
@@ -39,12 +42,14 @@ namespace Meerkat.Test.Integration
                 var request = RequestMessage("/api/values/secure", "1234");
                 var response = await client.SendAsync(request);
 
+                var result = await response.Content.ReadAsStringAsync();
+                Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
                 Assert.That((int)response.StatusCode, Is.EqualTo(200), "Status code differs");
-                Assert.That(await response.Content.ReadAsStringAsync(), Is.EqualTo("[\"A\",\"B\"]"), "Content differs");
+                Assert.That(result, Is.EqualTo("[\"A\",\"B\"]"), "Content differs");
             }
         }
 
-        public async Task OnSecureNoHmac(int status)
+        public async Task OnSecureNoHmac()
         {
             using (var server = TestServer.Create<Sample.Web.Startup>())
             {
@@ -52,13 +57,33 @@ namespace Meerkat.Test.Integration
                 var request = RequestMessage("/api/values/secure");
                 var response = await client.SendAsync(request);
 
-                // TODO: Why 500 rather than 401?
-                Assert.That((int)response.StatusCode, Is.EqualTo(status), "Status code differs");
-                //Assert.That(await response.Content.ReadAsStringAsync(), Is.EqualTo("[\"C\",\"D\"]"), "Content differs");
+                var result = await response.Content.ReadAsStringAsync();
+                Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
+                Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
+                //Assert.That(result, Is.EqualTo("[\"C\",\"D\"]"), "Content differs");
             }
         }
 
-        public async Task OnInvalidClientId(int status)
+        public async Task OnInvalidScheme()
+        {
+            using (var server = TestServer.Create<Sample.Web.Startup>())
+            {
+                var client = HmacClient(server.Handler);
+                var request = RequestMessage("/api/values/secure");
+
+                var header = new AuthenticationHeaderValue("Foo", "Bar");
+                request.Headers.Authorization = header;
+
+                var response = await client.SendAsync(request);
+
+                var result = await response.Content.ReadAsStringAsync();
+                Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
+                Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
+                //Assert.That(result, Is.EqualTo("[\"C\",\"D\"]"), "Content differs");
+            }
+        }
+
+        public async Task OnInvalidClientId()
         {
             using (var server = TestServer.Create<Sample.Web.Startup>())
             {
@@ -70,8 +95,30 @@ namespace Meerkat.Test.Integration
                 var response = await client.SendAsync(request);
 
                 // TODO: Why 500 rather than 401?
-                Assert.That((int)response.StatusCode, Is.EqualTo(status), "Status code differs");
-                //Assert.That(await response.Content.ReadAsStringAsync(), Is.EqualTo("[\"C\",\"D\"]"), "Content differs");
+                var result = await response.Content.ReadAsStringAsync();
+                Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
+                Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
+                //Assert.That(result, Is.EqualTo("[\"C\",\"D\"]"), "Content differs");
+            }
+        }
+
+        public async Task OnMissingSignature()
+        {
+            using (var server = TestServer.Create<Sample.Web.Startup>())
+            {
+                var client = HmacClient(server.Handler);
+                var request = RequestMessage("/api/values/secure");
+
+                var header = new AuthenticationHeaderValue(HmacAuthentication.AuthenticationScheme, null);
+                request.Headers.Authorization = header;
+
+                var response = await client.SendAsync(request);
+
+                // TODO: Why 500 rather than 401?
+                var result = await response.Content.ReadAsStringAsync();
+                Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
+                Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
+                //Assert.That(result, Is.EqualTo("[\"C\",\"D\"]"), "Content differs");
             }
         }
 
@@ -110,10 +157,8 @@ namespace Meerkat.Test.Integration
                 request.Headers.Date = DateTimeOffset.UtcNow.AddHours(-2);
                 var response = await client.SendAsync(request);
 
-                // TODO: Why 500 rather than 401?
-                Assert.That((int)response.StatusCode, Is.EqualTo(500), "Status code differs");
+                Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
             }
-
         }
 
         public async Task OnMessageDateTooLate()
@@ -127,8 +172,7 @@ namespace Meerkat.Test.Integration
                 request.Headers.Date = DateTimeOffset.UtcNow.AddHours(2);
                 var response = await client.SendAsync(request);
 
-                // TODO: Why 500 rather than 401?
-                Assert.That((int)response.StatusCode, Is.EqualTo(500), "Status code differs");
+                Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
             }
         }
 
@@ -191,6 +235,8 @@ namespace Meerkat.Test.Integration
                 // NB Dummy base address is mandatory for this to work.
                 BaseAddress = new Uri("http://sample.com")
             };
+
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
 
             return client;
         }

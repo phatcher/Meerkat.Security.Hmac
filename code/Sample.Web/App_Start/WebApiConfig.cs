@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Web.Http;
+using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Filters;
+using System.Web.Http.Tracing;
 
 using Microsoft.Practices.Unity.WebApi;
 
@@ -12,6 +14,12 @@ namespace Sample.Web
     {
         public static void Register(HttpConfiguration config)
         {
+            // Tracing and error handling
+            //var writer = config.EnableSystemDiagnosticsTracing();
+            //writer.IsVerbose = true;
+            //writer.MinimumLevel = TraceLevel.Debug;
+            config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
+
             // Wire up dependency resolution for WebAPI
             var container = UnityConfig.GetConfiguredContainer();
             config.DependencyResolver = new UnityHierarchicalDependencyResolver(container);

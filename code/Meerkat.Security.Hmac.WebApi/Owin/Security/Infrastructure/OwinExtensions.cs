@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -58,33 +57,6 @@ namespace Meerkat.Owin.Security.Infrastructure
 
             // We're done.
             return requestMessage;
-        }
-
-        /// <summary>
-        /// Construct a <see cref="HttpResponseMessage"/> from a <see cref="OwinRequest" />
-        /// </summary>
-        /// <param name="response"></param>
-        /// <returns></returns>
-        public static HttpResponseMessage ToHttpResponseMessage(this IOwinResponse response)
-        {
-            var requestMessage = response.Context.Request.ToHttpRequestMessage();
-            var responseMessage = requestMessage.CreateResponse((HttpStatusCode)response.StatusCode);
-
-            if (response.Body != null)
-            {
-                responseMessage.Content = new StreamContent(response.Body);
-            }
-
-            foreach (var header in response.Headers)
-            {
-
-                if (!responseMessage.Headers.TryAddWithoutValidation(header.Key, header.Value))
-                {
-                    responseMessage.Content.Headers.TryAddWithoutValidation(header.Key, header.Value);
-                }
-            }
-
-            return responseMessage;
         }
     }
 }
