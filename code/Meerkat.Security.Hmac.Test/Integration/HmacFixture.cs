@@ -28,6 +28,7 @@ namespace Meerkat.Test.Integration
                 var result = await response.Content.ReadAsStringAsync();
                 Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
                 Assert.That((int)response.StatusCode, Is.EqualTo(200), "Status code differs");
+                Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
                 Assert.That(result, Is.EqualTo("[\"C\",\"D\"]"), "Content differs");
             }
         }
@@ -45,6 +46,25 @@ namespace Meerkat.Test.Integration
                 var result = await response.Content.ReadAsStringAsync();
                 Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
                 Assert.That((int)response.StatusCode, Is.EqualTo(200), "Status code differs");
+                Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
+                Assert.That(result, Is.EqualTo("[\"A\",\"B\"]"), "Content differs");
+            }
+        }
+
+        public async Task OnSecuredZeroLength()
+        {
+            using (var server = TestServer.Create<Sample.Web.Startup>())
+            {
+                AssignSecret("1234", "1234", true);
+
+                var client = HmacClient(server.Handler);
+                var request = RequestMessage("/api/values/secure", "1234", content: string.Empty);
+                var response = await client.SendAsync(request);
+
+                var result = await response.Content.ReadAsStringAsync();
+                Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
+                Assert.That((int)response.StatusCode, Is.EqualTo(200), "Status code differs");
+                Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
                 Assert.That(result, Is.EqualTo("[\"A\",\"B\"]"), "Content differs");
             }
         }
@@ -57,10 +77,59 @@ namespace Meerkat.Test.Integration
                 var request = RequestMessage("/api/values/secure");
                 var response = await client.SendAsync(request);
 
-                var result = await response.Content.ReadAsStringAsync();
                 Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
                 Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
-                //Assert.That(result, Is.EqualTo("[\"C\",\"D\"]"), "Content differs");
+                Assert.That(response.ReasonPhrase, Is.EqualTo("Unauthorized"), "Reason phrase differs");
+            }
+        }
+
+        public async Task OnPost()
+        {
+            using (var server = TestServer.Create<Sample.Web.Startup>())
+            {
+                AssignSecret("1234", "1234", true);
+
+                var client = HmacClient(server.Handler);
+                var request = RequestMessage("/api/values/update", "1234", method: "POST", content: "{ B = 1 }");
+                var response = await client.SendAsync(request);
+
+                var result = await response.Content.ReadAsStringAsync();
+                Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
+                Assert.That((int)response.StatusCode, Is.EqualTo(200), "Status code differs");
+                Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
+                Assert.That(result, Is.EqualTo("1"), "Content differs");
+            }
+        }
+
+        public async Task OnPostZeroLength()
+        {
+            using (var server = TestServer.Create<Sample.Web.Startup>())
+            {
+                AssignSecret("1234", "1234", true);
+
+                var client = HmacClient(server.Handler);
+                var request = RequestMessage("/api/values/update", "1234", method: "POST", content: string.Empty);
+                var response = await client.SendAsync(request);
+
+                var result = await response.Content.ReadAsStringAsync();
+                Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
+                Assert.That((int)response.StatusCode, Is.EqualTo(200), "Status code differs");
+                Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
+                Assert.That(result, Is.EqualTo("1"), "Content differs");
+            }
+        }
+
+        public async Task OnPostNoHmac()
+        {
+            using (var server = TestServer.Create<Sample.Web.Startup>())
+            {
+                var client = HmacClient(server.Handler);
+                var request = RequestMessage("/api/values/update", "1234", method: "POST", content: "{ B = 1 }");
+                var response = await client.SendAsync(request);
+
+                Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
+                Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
+                Assert.That(response.ReasonPhrase, Is.EqualTo("Unauthorized"), "Reason phrase differs");
             }
         }
 
@@ -76,10 +145,9 @@ namespace Meerkat.Test.Integration
 
                 var response = await client.SendAsync(request);
 
-                var result = await response.Content.ReadAsStringAsync();
                 Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
                 Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
-                //Assert.That(result, Is.EqualTo("[\"C\",\"D\"]"), "Content differs");
+                Assert.That(response.ReasonPhrase, Is.EqualTo("Unauthorized"), "Reason phrase differs");
             }
         }
 
@@ -94,11 +162,9 @@ namespace Meerkat.Test.Integration
                 var request = RequestMessage("/api/values/secure", "1234");
                 var response = await client.SendAsync(request);
 
-                // TODO: Why 500 rather than 401?
-                var result = await response.Content.ReadAsStringAsync();
                 Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
                 Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
-                //Assert.That(result, Is.EqualTo("[\"C\",\"D\"]"), "Content differs");
+                Assert.That(response.ReasonPhrase, Is.EqualTo("Invalid signature"), "Reason phrase differs");
             }
         }
 
@@ -114,11 +180,9 @@ namespace Meerkat.Test.Integration
 
                 var response = await client.SendAsync(request);
 
-                // TODO: Why 500 rather than 401?
-                var result = await response.Content.ReadAsStringAsync();
                 Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
                 Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
-                //Assert.That(result, Is.EqualTo("[\"C\",\"D\"]"), "Content differs");
+                Assert.That(response.ReasonPhrase, Is.EqualTo("Missing credentials"), "Reason phrase differs");
             }
         }
 
@@ -139,6 +203,7 @@ namespace Meerkat.Test.Integration
                 response = await client.SendAsync(request);
 
                 Assert.That((int)response.StatusCode, Is.EqualTo(200), "Status code differs");
+                Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
             }
         }
 
@@ -158,6 +223,7 @@ namespace Meerkat.Test.Integration
                 var response = await client.SendAsync(request);
 
                 Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
+                Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
             }
         }
 
@@ -173,6 +239,7 @@ namespace Meerkat.Test.Integration
                 var response = await client.SendAsync(request);
 
                 Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
+                Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
             }
         }
 
@@ -188,7 +255,7 @@ namespace Meerkat.Test.Integration
             Sample.Web.Startup.Reset();
 
             // Standard behaviour
-            Sample.Web.Startup.UseMvc = false;
+            Sample.Web.Startup.IgnoreMvc = true;
             Sample.Web.Startup.UseOwinHmac = false;
         }
 
@@ -211,16 +278,23 @@ namespace Meerkat.Test.Integration
             }
         }
 
-        private HttpRequestMessage RequestMessage(string url, string clientId = null, bool addNonce = false)
+        private HttpRequestMessage RequestMessage(string url, string clientId = null, bool addNonce = false, string method = "GET", string content = null)
         {
             var request = new HttpRequestMessage
             {
                 RequestUri = new Uri(url, UriKind.Relative),
-                Method = HttpMethod.Get
+                Method = new HttpMethod(method)
             };
+
             if (!string.IsNullOrEmpty(clientId))
             {
                 request.Headers.Add(HmacAuthentication.ClientIdHeader, clientId);
+            }
+
+            if (content != null)
+            {
+                request.Content = new StringContent(content);
+                request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             }
 
             // TODO: Add nonce header if required

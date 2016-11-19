@@ -1,8 +1,11 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Text;
+
+using Common.Logging;
 
 using Microsoft.Owin;
 
@@ -10,6 +13,8 @@ namespace Meerkat.Owin.Security.Infrastructure
 {
     public static class OwinExtensions
     {
+        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Get the Authentication header.
         /// </summary>
@@ -28,8 +33,8 @@ namespace Meerkat.Owin.Security.Infrastructure
                 return null;
             }
 
-            // TODO: Error trap
-            return AuthenticationHeaderValue.Parse(value[0]);
+            AuthenticationHeaderValue auth;
+            return AuthenticationHeaderValue.TryParse(value[0], out auth) ? auth : null;
         }
 
         /// <summary>
@@ -51,9 +56,35 @@ namespace Meerkat.Owin.Security.Infrastructure
                 Content = new StreamContent(new MemoryStream(requestData))
             };
 
-            // Copy the headers
-            request.Headers.ToList()
-                   .ForEach(x => requestMessage.Headers.Add(x.Key, x.Value));
+            // Copy the headers, handle content headers we need
+            foreach (var header in request.Headers)
+            {
+                switch (header.Key)
+                {
+                    case "Content-Length":
+                        requestMessage.Content.Headers.ContentLength = long.Parse(header.Value[0]);
+                        break;
+
+                    case "Content-Type":
+                        requestMessage.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(header.Value[0]);
+                        break;
+
+                    case "Content-MD5":
+                        requestMessage.Content.Headers.ContentMD5 = Convert.FromBase64String(header.Value[0]);
+                        break;
+
+                    default:
+                        try
+                        {
+                            requestMessage.Headers.TryAddWithoutValidation(header.Key, header.Value);
+                        }
+                        catch (Exception)
+                        {
+                            Logger.WarnFormat("Error copying header: {0} - {1}", header.Key, header.Value);
+                        }
+                        break;
+                }
+            }
 
             // We're done.
             return requestMessage;

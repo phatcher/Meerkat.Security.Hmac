@@ -1,3 +1,7 @@
+#### 2.1 (2016-11-19)
+* Handle content headers when converting IOwinRequest to HttpReuest, now log unhandled headers but don't error
+* Improve error messages from Owin component, now same behaviour as HmacAuthorizeAttribute
+
 #### 2.0.0 (2016-11-17)
 * Introduced Owin middleware component, HmacAuthorizeAttribute is invoked too late to amend the claims using ClaimsTransformer in the Owin pipeline.
 * Breaking change - Changed interface of IHmacAuthenticator to return ClaimsIdentity, simplifies Owin integration.

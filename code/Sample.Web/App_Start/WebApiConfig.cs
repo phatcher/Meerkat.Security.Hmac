@@ -1,8 +1,6 @@
 ﻿using System.Linq;
 using System.Web.Http;
-using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Filters;
-using System.Web.Http.Tracing;
 
 using Microsoft.Practices.Unity.WebApi;
 
@@ -34,18 +32,6 @@ namespace Sample.Web
 
             // Web API routes
             config.MapHttpAttributeRoutes();
-
-            config.Routes.MapHttpRoute(
-                     name: "WithActionApi",
-                     routeTemplate: "api/{controller}/{action}/{id}",
-                     defaults: new { id = System.Web.Http.RouteParameter.Optional }
-                     );
-
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
         }
     }
 }

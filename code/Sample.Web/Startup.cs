@@ -6,6 +6,7 @@ using System.Web.Routing;
 
 using Meerkat.Owin.Security.Infrastructure;
 using Meerkat.Security.Web.Http;
+
 using Microsoft.Owin;
 using Microsoft.Practices.Unity.Mvc;
 
@@ -20,13 +21,12 @@ namespace Sample.Web
         ~Startup()
         {
             // Needed for use with OwinTestServer
-            UseMvc = false;
             UseOwinHmac = true;
         }
 
         public static bool UseOwinHmac { get; set; }
 
-        public static bool UseMvc { get; set; }
+        public static bool IgnoreMvc { get; set; }
 
         public static HttpConfiguration Config { get; private set; }
 
@@ -41,7 +41,8 @@ namespace Sample.Web
             var container = UnityConfig.GetConfiguredContainer();
 
             // MVC configuration
-            if (UseMvc)
+            // NB Have to flip sense as run before static
+            if (!IgnoreMvc)
             {
                 FilterProviders.Providers.Remove(FilterProviders.Providers.OfType<FilterAttributeFilterProvider>().First());
                 FilterProviders.Providers.Add(new UnityFilterAttributeFilterProvider(container));

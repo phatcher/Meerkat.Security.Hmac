@@ -15,6 +15,7 @@ namespace Meerkat.Owin.Security.Infrastructure
     {
         private readonly ILogger logger;
         private readonly IHmacAuthenticator authenticator;
+        private string reasonPhrase;
 
         /// <summary>
         /// Create a new instance of the <see cref="HmacAuthenticationHandler"/> class.
@@ -33,6 +34,8 @@ namespace Meerkat.Owin.Security.Infrastructure
             var request = Context.Request;
             var authorization = request.Headers.Authentication();
 
+            reasonPhrase = "Unauthorized";
+
             if (authorization == null)
             {
                 // No authentication, so ignore
@@ -50,7 +53,7 @@ namespace Meerkat.Owin.Security.Infrastructure
             {
                 // Authentication was attempted but failed. Set ErrorResult to indicate an error.
                 logger.WriteWarning("Missing credentials");
-                //context.ErrorResult = new AuthenticationFailureResult("Missing credentials", request);
+                reasonPhrase = "Missing credentials";
                 return null;
             }
 
@@ -60,7 +63,7 @@ namespace Meerkat.Owin.Security.Infrastructure
             {
                 // Authentication was attempted but failed. Set ErrorResult to indicate an error.
                 logger.WriteWarning("Invalid signature");
-                //context.ErrorResult = new AuthenticationFailureResult("Invalid signature", request);
+                reasonPhrase = "Invalid signature";
                 return null;
             }
 
@@ -79,6 +82,7 @@ namespace Meerkat.Owin.Security.Infrastructure
 
             // Should play nice with other authentication schemes
             Response.Headers.Append("WWW-Authenticate", HmacAuthentication.AuthenticationScheme);
+            Response.ReasonPhrase = reasonPhrase;
 
             return Task.FromResult(0);
         }

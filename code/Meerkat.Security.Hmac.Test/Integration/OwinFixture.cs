@@ -20,9 +20,33 @@ namespace Meerkat.Test.Integration
         }
 
         [Test]
+        public async Task SecuredZeroLength()
+        {
+            await OnSecuredZeroLength();
+        }
+
+        [Test]
         public async Task SecureNoHmac()
         {
             await OnSecureNoHmac();
+        }
+
+        [Test]
+        public async Task Post()
+        {
+            await OnPost();
+        }
+
+        [Test]
+        public async Task PostZeroLength()
+        {
+            await OnPostZeroLength();
+        }
+
+        [Test]
+        public async Task PostNoHmac()
+        {
+            await OnPostNoHmac();
         }
 
         [Test]
