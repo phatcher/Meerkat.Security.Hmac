@@ -9,13 +9,13 @@ open Fake.RestorePackageHelper
 open Fake.ReleaseNotesHelper
 
 // Version info
+let product = "Meerkat Security HMAC"
 let projectName = "Meerkat.Security.Hmac"
 let projectSummary = ""
 let projectDescription = "An implementation of the HMAC security protocol for ASP.NET"
 let authors = ["Paul Hatcher"]
 
 let release = LoadReleaseNotes "RELEASE_NOTES.md"
-
 // Properties
 let buildDir = "./build"
 let toolsDir = getBuildParamOrDefault "tools" "./tools"
@@ -35,8 +35,12 @@ Target "PackageRestore" (fun _ ->
 Target "SetVersion" (fun _ ->
     let commitHash = Information.getCurrentHash()
     let infoVersion = String.concat " " [release.AssemblyVersion; commitHash]
+    let alist = authors |> String.concat ", "
+    let copyright = "© " + System.DateTime.Now.Year.ToString() + " " + alist
     CreateCSharpAssemblyInfo "./code/SolutionInfo.cs"
-        [Attribute.Version release.AssemblyVersion
+        [Attribute.Product product
+         Attribute.Copyright copyright
+         Attribute.Version release.AssemblyVersion
          Attribute.FileVersion release.AssemblyVersion
          Attribute.InformationalVersion infoVersion]
 )

@@ -44,42 +44,42 @@ On the server side we get...
 7. Check that the hashs match, if not fail
 8. Check if we've seen this hash before, if so fail - this handles replay attacks
 
-There are a number of components that need wiring together for this to work, so I'm using Unity in the examples to provide IoC/DI services, but you can easily use your preferred 
+There are a number of components that need wiring together for this to work; I'm using Unity in the examples to provide IoC/DI services, but you can easily use your preferred 
 container to do the same.
 
-So to use the library you must secure both the server and the clients that will communicate with it, let's start with the client...
+So to use the library you must configure both the server and the clients that will communicate with it, let's start with the client...
 
 First we need to wire up the basic components
+```c#
+public static void RegisterTypes(IUnityContainer container)
+{
+    var store = new SecretStore();
+    container.RegisterInstance<ISecretStore>(store);
+    container.RegisterInstance<ISecretRepository>(store);
+    container.RegisterType<IMessageRepresentationBuilder, MessageRepresentationBuilder>();
+    container.RegisterType<ISignatureCalculator, HmacSignatureCalculator>();
 
-'
-    public static void RegisterTypes(IUnityContainer container)
+    container.RegisterType<HmacSigningHandler>();
+}
+```
+This gives the client the ability to store and retrieve client ids and secrets, construct the message representation and produce the signature from it.
+
+Next, when we create a HttpClient we need to wire up the appropriate handlers, as an example there is a utility function in the form class as follows
+```c#
+public HttpMessageHandler CreateHandler()
+{
+    var client = new HttpClientHandler();
+
+    var hmac = Container.Resolve<HmacSigningHandler>();
+    hmac.InnerHandler = client;
+
+    var md5 = new RequestContentMd5Handler
     {
-        container.RegisterType<ISecretStore, SecretStore>();
-        container.RegisterType<IMessageRepresentationBuilder, MessageRepresentationBuilder>();
-        container.RegisterType<ISignatureCalculator, HmacSignatureCalculator>();
+        InnerHandler = hmac
+    };
 
-        container.RegisterType<HmacSigningHandler>();
-    }
-'
-
-Next, when we create a HttpClient we need to wire up the appropriate handlers so there is a utility function in the form class as follows
-
-'
-    public HttpMessageHandler CreateHandler()
-    {
-        var client = new HttpClientHandler();
-
-        var hmac = Container.Resolve<HmacSigningHandler>();
-        hmac.InnerHandler = client;
-
-        var md5 = new RequestContentMd5Handler
-        {
-            InnerHandler = hmac
-        };
-
-        return md5;
-    }
-'
-
-Note the order with the MD5 hash happening before the HMAC and the standard HttpClientHandler being last to do the actual transmission. You can add your own handlers as needed but 
-the relative order of the these three handlers should remain the same.
+    return md5;
+}
+```
+Note the order, with the MD5 hash happening before the HMAC, and the standard HttpClientHandler being last to do the actual transmission. You can add your own handlers as needed but 
+the relative order of the these three handlers must remain the same.

@@ -1,3 +1,6 @@
+#### 2.1.1 (2016-12-10)
+* Fix DateTime.Kind problem by changing header date setting to DateTimeOffset.UtcNow.
+
 #### 2.1 (2016-11-19)
 * Handle content headers when converting IOwinRequest to HttpReuest, now log unhandled headers but don't error
 * Improve error messages from Owin component, now same behaviour as HmacAuthorizeAttribute

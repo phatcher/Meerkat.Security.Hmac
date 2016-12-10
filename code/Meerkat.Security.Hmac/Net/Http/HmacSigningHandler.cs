@@ -54,7 +54,7 @@ namespace Meerkat.Net.Http
             }
 
             // Need the date present in UTC for the signature calculation
-            request.Headers.Date = new DateTimeOffset(DateTime.Now, DateTime.Now - DateTime.UtcNow);
+            request.Headers.Date = DateTimeOffset.UtcNow;
 
             // Get the canonical representation.
             var representation = representationBuilder.BuildRequestRepresentation(request);
