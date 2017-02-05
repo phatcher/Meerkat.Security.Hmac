@@ -2,7 +2,9 @@ using System;
 
 using Meerkat.Caching;
 using Meerkat.Security;
-
+using Meerkat.Security.Authentication;
+using Meerkat.Security.Authentication.Hmac;
+using Meerkat.Security.Authorization;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Sample.Web.Services;

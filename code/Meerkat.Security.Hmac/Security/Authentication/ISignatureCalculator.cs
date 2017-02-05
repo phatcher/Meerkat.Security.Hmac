@@ -1,4 +1,4 @@
-﻿namespace Meerkat.Security
+﻿namespace Meerkat.Security.Authentication
 {
     /// <summary>
     /// Calculates a message signature 

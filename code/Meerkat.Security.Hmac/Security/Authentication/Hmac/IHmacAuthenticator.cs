@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Meerkat.Security
+namespace Meerkat.Security.Authentication.Hmac
 {
     /// <summary>
     /// Authenticator for a HMAC encoded message.

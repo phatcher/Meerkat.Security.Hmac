@@ -3,20 +3,18 @@ using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
-
-using Common.Logging;
-
 using Meerkat.Caching;
+using Meerkat.Logging;
 using Meerkat.Net.Http;
 
-namespace Meerkat.Security
+namespace Meerkat.Security.Authentication.Hmac
 {
     /// <summary>
     /// Validates a HMAC signature if present.
     /// </summary>
     public class HmacSignatureValidator : ISignatureValidator
     {
-        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Logger = LogProvider.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private const string CacheRegion = "hmac";
 

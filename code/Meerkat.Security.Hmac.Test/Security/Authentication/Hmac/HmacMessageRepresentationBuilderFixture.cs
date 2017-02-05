@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Net.Http;
-using Meerkat.Security;
+using Meerkat.Security.Authentication;
+using Meerkat.Security.Authentication.Hmac;
 using NUnit.Framework;
 
-namespace Meerkat.Test.Security
+namespace Meerkat.Test.Security.Authentication.Hmac
 {
     [TestFixture]
-    public class MessageRepresentationBuilderFixture
+    public class HmacMessageRepresentationBuilderFixture
     {
         [Test]
         public void GetMessage()
@@ -19,7 +20,7 @@ namespace Meerkat.Test.Security
             request.Headers.Add(HmacAuthentication.CustomHeaders, "custom");
             request.Headers.Add("custom", "A");
 
-            var builder = new MessageRepresentationBuilder();
+            var builder = new HmacMessageRepresentationBuilder();
 
             var candidate = builder.BuildRequestRepresentation(request);
 
@@ -35,7 +36,7 @@ namespace Meerkat.Test.Security
             //request.Headers.Date = DateTimeOffset.UtcNow;
             request.Headers.Add(HmacAuthentication.ClientIdHeader, "test");
 
-            var builder = new MessageRepresentationBuilder();
+            var builder = new HmacMessageRepresentationBuilder();
 
             var candidate = builder.BuildRequestRepresentation(request);
 
@@ -51,7 +52,7 @@ namespace Meerkat.Test.Security
             request.Headers.Date = DateTimeOffset.UtcNow;
             //request.Headers.Add(HmacAuthentication.ClientIdHeader, "test");
 
-            var builder = new MessageRepresentationBuilder();
+            var builder = new HmacMessageRepresentationBuilder();
 
             var candidate = builder.BuildRequestRepresentation(request);
 
@@ -68,7 +69,7 @@ namespace Meerkat.Test.Security
             request.Headers.Add(HmacAuthentication.ClientIdHeader, "test");
             request.Headers.Add(HmacAuthentication.CustomHeaders, "custom");
 
-            var builder = new MessageRepresentationBuilder();
+            var builder = new HmacMessageRepresentationBuilder();
 
             var candidate = builder.BuildRequestRepresentation(request);
 

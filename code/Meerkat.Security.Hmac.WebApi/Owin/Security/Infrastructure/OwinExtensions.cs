@@ -5,7 +5,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 
-using Common.Logging;
+using Meerkat.Logging;
 
 using Microsoft.Owin;
 
@@ -13,7 +13,7 @@ namespace Meerkat.Owin.Security.Infrastructure
 {
     public static class OwinExtensions
     {
-        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Logger = LogProvider.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Get the Authentication header.

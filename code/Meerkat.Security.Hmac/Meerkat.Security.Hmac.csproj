@@ -11,6 +11,7 @@
     <AssemblyName>Meerkat.Security.Hmac</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,16 +32,12 @@
     <DocumentationFile>bin\Release\Meerkat.Security.Hmac.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
+    <Reference Include="Meerkat.Caching, Version=1.0.6.0, Culture=neutral, PublicKeyToken=ac4b64546145efb9, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Meerkat.Caching.1.0.6\lib\net45\Meerkat.Caching.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Meerkat.Caching, Version=1.0.4.0, Culture=neutral, PublicKeyToken=ac4b64546145efb9, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Meerkat.Caching.1.0.4\lib\net45\Meerkat.Caching.dll</HintPath>
+    <Reference Include="Meerkat.Logging, Version=1.0.2.0, Culture=neutral, PublicKeyToken=48420f6ca18bf904, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Meerkat.Logging.1.0.2\lib\net45\Meerkat.Logging.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -65,27 +62,29 @@
     <Compile Include="Net\Http\RequestContentMd5Handler.cs" />
     <Compile Include="Net\Http\ResponseContentMd5Handler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security\HmacAuthentication.cs" />
-    <Compile Include="Security\IRequestClaimsProvider.cs" />
-    <Compile Include="Security\MessageRepresentationBuilder.cs" />
+    <Compile Include="Security\Authentication\Hmac\HmacAuthentication.cs" />
+    <Compile Include="Security\Authentication\MessageRepresentationBuilder.cs" />
+    <Compile Include="Security\Authorization\IRequestClaimsProvider.cs" />
+    <Compile Include="Security\Authentication\Hmac\HmacMessageRepresentationBuilder.cs" />
     <Compile Include="Security\DpapiExtensions.cs" />
-    <Compile Include="Security\HmacAuthenticator.cs" />
-    <Compile Include="Security\HmacSignatureCalculator.cs" />
-    <Compile Include="Security\HmacSignatureValidator.cs" />
-    <Compile Include="Security\ISignatureValidator.cs" />
-    <Compile Include="Security\IHmacAuthenticator.cs" />
-    <Compile Include="Security\IMessageRepresentationBuilder.cs" />
-    <Compile Include="Security\ISecretRepository.cs" />
-    <Compile Include="Security\ISecretStore.cs" />
-    <Compile Include="Security\ISignatureCalculator.cs" />
-    <Compile Include="Security\RequestClaimsProvider.cs" />
-    <Compile Include="Security\SecretStore.cs" />
+    <Compile Include="Security\Authentication\Hmac\HmacAuthenticator.cs" />
+    <Compile Include="Security\Authentication\Hmac\HmacSignatureCalculator.cs" />
+    <Compile Include="Security\Authentication\Hmac\HmacSignatureValidator.cs" />
+    <Compile Include="Security\Authentication\ISignatureValidator.cs" />
+    <Compile Include="Security\Authentication\Hmac\IHmacAuthenticator.cs" />
+    <Compile Include="Security\Authentication\IMessageRepresentationBuilder.cs" />
+    <Compile Include="Security\Authentication\ISecretRepository.cs" />
+    <Compile Include="Security\Authentication\ISecretStore.cs" />
+    <Compile Include="Security\Authentication\ISignatureCalculator.cs" />
+    <Compile Include="Security\Authorization\RequestClaimsProvider.cs" />
+    <Compile Include="Security\Authentication\SecretStore.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

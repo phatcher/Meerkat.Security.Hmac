@@ -2,17 +2,16 @@
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using Meerkat.Logging;
 
-using Common.Logging;
-
-namespace Meerkat.Security
+namespace Meerkat.Security.Authentication.Hmac
 {
     /// <summary>
     /// Computes a HMAC signature.
     /// </summary>
     public class HmacSignatureCalculator : ISignatureCalculator
     {
-        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Logger = LogProvider.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         // TODO: Inject this via either constructor 
         private const string HmacScheme = "SHA256";
@@ -20,7 +19,7 @@ namespace Meerkat.Security
         /// <copydoc cref="ISignatureCalculator.Signature" />
         public string Signature(string secret, string value)
         {
-            if (Logger.IsDebugEnabled)
+            if (Logger.IsDebugEnabled())
             {
                 Logger.DebugFormat("Source {0}: '{1}'", secret.Substring(0, 2) + "...", value);
             }
@@ -29,7 +28,7 @@ namespace Meerkat.Security
             var valueBytes = Encoding.Unicode.GetBytes(value);
             string signature;
 
-            if (Logger.IsDebugEnabled)
+            if (Logger.IsDebugEnabled())
             {
                 Logger.DebugFormat("Value '{0}'", BitConverter.ToString(valueBytes));
             }
@@ -40,7 +39,7 @@ namespace Meerkat.Security
                 signature = Convert.ToBase64String(hash);
             }
 
-            if (Logger.IsDebugEnabled)
+            if (Logger.IsDebugEnabled())
             {
                 Logger.DebugFormat("Signature {0} : {1}", HmacScheme, signature);
             }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace Meerkat.Security
+namespace Meerkat.Security.Authentication
 {
     /// <summary>
     /// Simple store for client secrets

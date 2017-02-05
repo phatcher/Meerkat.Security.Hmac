@@ -1,5 +1,6 @@
 ﻿using System;
-using Meerkat.Security;
+
+using Meerkat.Security.Authentication.Hmac;
 
 using Microsoft.Owin;
 using Microsoft.Owin.Logging;
@@ -10,7 +11,7 @@ using Owin;
 namespace Meerkat.Owin.Security.Infrastructure
 {
     /// <summary>
-    /// Creates <see cref="HmacAuthenticationHandler"/>s
+    /// Creates <see cref="HmacAuthenticationHandler"/> using <see cref="IServiceProvider"/>.
     /// </summary>
     public class HmacAuthenticationMiddleware : AuthenticationMiddleware<HmacAuthenticationOptions>
     {

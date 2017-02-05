@@ -1,8 +1,7 @@
-﻿using Meerkat.Security;
-
+﻿using Meerkat.Security.Authentication.Hmac;
 using NUnit.Framework;
 
-namespace Meerkat.Test.Security
+namespace Meerkat.Test.Security.Authentication.Hmac
 {
     [TestFixture]
     public class HmacSignatureCalculatorFixture

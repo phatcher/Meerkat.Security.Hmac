@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 
-namespace Meerkat.Security
+namespace Meerkat.Security.Authentication
 {
     /// <summary>
     /// Responsible for constructing a canonical representation of a message.

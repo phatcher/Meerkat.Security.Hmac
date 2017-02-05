@@ -4,13 +4,12 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Meerkat.Caching;
 using Meerkat.Net.Http;
-using Meerkat.Security;
-
+using Meerkat.Security.Authentication;
+using Meerkat.Security.Authentication.Hmac;
 using Moq;
-
 using NUnit.Framework;
 
-namespace Meerkat.Test.Security
+namespace Meerkat.Test.Security.Authentication.Hmac
 {
     [TestFixture]
     public class HmacSignatureValidatorFixture

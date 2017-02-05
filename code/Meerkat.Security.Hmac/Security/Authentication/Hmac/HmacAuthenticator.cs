@@ -2,8 +2,9 @@
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Meerkat.Security.Authorization;
 
-namespace Meerkat.Security
+namespace Meerkat.Security.Authentication.Hmac
 {
     /// <summary>
     /// Validates a HMAC encoded message, creating a <see cref="ClaimsIdentity"/> with claims provided by a <see cref="IRequestClaimsProvider"/>.

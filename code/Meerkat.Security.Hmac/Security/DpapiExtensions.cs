@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Meerkat.Security
 {
-    public static class DpapiExtensions
+    internal static class DpapiExtensions
     {
         public static SecureString ToSecureString(string value)
         {

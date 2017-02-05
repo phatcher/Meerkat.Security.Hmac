@@ -1,17 +1,30 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Diagnostics;
+using System.Net.Http;
 using System.Threading.Tasks;
-
-using Meerkat.Security;
-
+using log4net;
+using Meerkat.Security.Authentication;
+using Meerkat.Security.Authentication.Hmac;
+using Meerkat.Security.Authorization;
 using Moq;
-
 using NUnit.Framework;
 
-namespace Meerkat.Test.Security
+namespace Meerkat.Test.Security.Authentication.Hmac
 {
     [TestFixture]
     public class HmacAuthenticatorFixture
     {
+        //public HmacAuthenticatorFixture()
+        //{
+        //    var loggerFile = new System.IO.FileInfo(AppDomain.CurrentDomain.BaseDirectory + "\\logger.config");
+
+        //    log4net.Config.XmlConfigurator.Configure();
+        //    if (LogManager.GetRepository().Configured)
+        //    {
+        //        Debug.WriteLine("configured");
+        //    }
+        //}
+
         [Test]
         public async Task ValidSignature()
         {

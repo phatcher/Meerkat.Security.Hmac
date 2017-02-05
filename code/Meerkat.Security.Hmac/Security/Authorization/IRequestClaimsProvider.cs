@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Security.Claims;
 
-namespace Meerkat.Security
+namespace Meerkat.Security.Authorization
 {
     /// <summary>
     /// Provide <see cref="Claim"/>s that are supported by the request

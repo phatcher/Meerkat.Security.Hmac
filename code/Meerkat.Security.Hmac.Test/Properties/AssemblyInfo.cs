@@ -10,6 +10,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
+[assembly: log4net.Config.XmlConfigurator(ConfigFile = "logger.config")]
+
 #if DEBUG
 [assembly: AssemblyConfiguration("Debug")]
 #else

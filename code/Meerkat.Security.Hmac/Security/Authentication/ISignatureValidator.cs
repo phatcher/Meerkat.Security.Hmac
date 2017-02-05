@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Meerkat.Security
+namespace Meerkat.Security.Authentication
 {
     /// <summary>
     /// Validates a message signature

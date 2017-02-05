@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 
-using Meerkat.Security;
-
+using Meerkat.Security.Authentication;
+using Meerkat.Security.Authentication.Hmac;
 using Microsoft.Owin.Logging;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Infrastructure;

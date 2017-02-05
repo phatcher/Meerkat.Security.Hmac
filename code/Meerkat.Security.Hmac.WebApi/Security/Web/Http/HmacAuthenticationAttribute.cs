@@ -3,6 +3,8 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http.Filters;
+using Meerkat.Security.Authentication;
+using Meerkat.Security.Authentication.Hmac;
 
 namespace Meerkat.Security.Web.Http
 {

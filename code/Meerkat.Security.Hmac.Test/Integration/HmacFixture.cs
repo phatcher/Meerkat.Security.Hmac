@@ -4,8 +4,8 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 using Meerkat.Net.Http;
-using Meerkat.Security;
-
+using Meerkat.Security.Authentication;
+using Meerkat.Security.Authentication.Hmac;
 using Microsoft.Owin.Testing;
 using Microsoft.Practices.Unity;
 

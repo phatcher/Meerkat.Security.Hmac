@@ -2,6 +2,8 @@
 using System.Net.Http;
 using Meerkat.Net.Http;
 using Meerkat.Security;
+using Meerkat.Security.Authentication;
+using Meerkat.Security.Authentication.Hmac;
 using Microsoft.Practices.Unity;
 
 namespace Sample.Client

@@ -6,9 +6,9 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Common.Logging;
-
-using Meerkat.Security;
+using Meerkat.Logging;
+using Meerkat.Security.Authentication;
+using Meerkat.Security.Authentication.Hmac;
 
 namespace Meerkat.Net.Http
 {
@@ -17,7 +17,7 @@ namespace Meerkat.Net.Http
     /// </summary>
     public class HmacSigningHandler : DelegatingHandler
     {
-        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Logger = LogProvider.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly ISecretRepository secretRepository;
         private readonly IMessageRepresentationBuilder representationBuilder;
@@ -46,9 +46,9 @@ namespace Meerkat.Net.Http
         /// <returns></returns>
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            // Only try and sign if we have a user
-            var userName = request.Headers.GetValues<string>(HmacAuthentication.ClientIdHeader).FirstOrDefault();
-            if (string.IsNullOrEmpty(userName))
+            // Only try and sign if we have a client id
+            var clientId = request.Headers.GetValues<string>(HmacAuthentication.ClientIdHeader).FirstOrDefault();
+            if (string.IsNullOrEmpty(clientId))
             {
                 return base.SendAsync(request, cancellationToken);
             }
@@ -60,10 +60,11 @@ namespace Meerkat.Net.Http
             var representation = representationBuilder.BuildRequestRepresentation(request);
 
             // Now try and sign it
-            var secret = secretRepository.ClientSecret(userName);
+            Logger.InfoFormat("HMAC signing for client id {0}: {1}", clientId, request.RequestUri);
+            var secret = secretRepository.ClientSecret(clientId);
             if (secret == null)
             {
-                Logger.WarnFormat("No secret for client id {0}: {1}", userName, request.RequestUri);
+                Logger.WarnFormat("No secret for client id {0}: {1}", clientId, request.RequestUri);
             }
             else
             {
