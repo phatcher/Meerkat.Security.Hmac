@@ -3,8 +3,11 @@
 namespace Meerkat.Security.Authentication
 {
     /// <summary>
-    /// Simple store for client secrets
+    /// Simple store for client secrets, useful for client side where we might not have a datatabase.
     /// </summary>
+    /// <remarks>
+    /// Not "secure" in that the secrets are held in memory in clear.
+    /// </remarks>
     public class SecretStore : ISecretRepository, ISecretStore
     {
         private readonly ConcurrentDictionary<string, string> secrets;

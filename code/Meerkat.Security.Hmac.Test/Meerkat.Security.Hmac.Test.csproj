@@ -112,6 +112,7 @@
     <Compile Include="Integration\HmacFixture.cs" />
     <Compile Include="Integration\OwinFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\Authentication\CachingSecretRepositoryFixture.cs" />
     <Compile Include="Security\Authentication\Hmac\HmacAuthenticatorFixture.cs" />
     <Compile Include="Security\Authentication\Hmac\HmacSignatureCalculatorFixture.cs" />
     <Compile Include="Security\Authentication\Hmac\HmacSignatureValidatorFixture.cs" />

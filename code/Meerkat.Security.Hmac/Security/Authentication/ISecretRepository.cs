@@ -8,8 +8,8 @@
         /// <summary>
         /// Obtain the secret for the client.
         /// </summary>
-        /// <param name="clientId"></param>
-        /// <returns></returns>
+        /// <param name="clientId">ClientId to use</param>
+        /// <returns>The secret associated with client, if not present may be null or empty.</returns>
         string ClientSecret(string clientId);
     }
 }

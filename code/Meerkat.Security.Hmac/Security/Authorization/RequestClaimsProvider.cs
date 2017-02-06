@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
+
 using Meerkat.Net.Http;
-using Meerkat.Security.Authentication;
 using Meerkat.Security.Authentication.Hmac;
 
 namespace Meerkat.Security.Authorization
