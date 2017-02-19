@@ -255,6 +255,7 @@ namespace Meerkat.Test.Integration
             Sample.Web.Startup.Reset();
 
             // Standard behaviour
+            Sample.Web.Startup.SelfHost = true;
             Sample.Web.Startup.IgnoreMvc = true;
             Sample.Web.Startup.UseOwinHmac = false;
         }

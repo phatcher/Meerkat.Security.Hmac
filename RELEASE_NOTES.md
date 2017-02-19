@@ -1,3 +1,7 @@
+### 3.0.1 (2017-02-19)
+* Introduce and prefer middleware using IDependencyResolver
+* Introduced CachingSecretRepositorying using Meerkat.Caching
+
 #### 3.0.0 (2017-02-04)
 * Breaking change - changing namespaces to make it easier to filter on logging
 * Change from Common.Logging to Meerkat.Logging, unifies logging framework across libraries.
