@@ -225,5 +225,8 @@ Desktop.ini
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 /.fake
-/.paket/paket.exe
+/.paket
+/.sonarqube
 /packages/build
+
+/paket-files

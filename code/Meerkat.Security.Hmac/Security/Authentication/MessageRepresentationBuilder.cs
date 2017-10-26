@@ -40,7 +40,7 @@ namespace Meerkat.Security.Authentication
         /// <summary>
         /// Builds message representation as follows:
         /// HTTPMethod\n +
-        /// Request URI\n +
+        /// Request URI (AbsolutePath i.e. excluding host, port and query)\n +
         /// Content-MD5\n +  
         /// Timestamp\n +
         /// </summary>

@@ -3,15 +3,15 @@ using System.Reflection;
 
 [assembly: AssemblyProductAttribute("Meerkat Security HMAC")]
 [assembly: AssemblyCopyrightAttribute("� 2017 Paul Hatcher")]
-[assembly: AssemblyVersionAttribute("3.0.1")]
-[assembly: AssemblyFileVersionAttribute("3.0.1")]
-[assembly: AssemblyInformationalVersionAttribute("3.0.1 ac6b1d")]
+[assembly: AssemblyVersionAttribute("3.0.2")]
+[assembly: AssemblyFileVersionAttribute("3.0.2")]
+[assembly: AssemblyInformationalVersionAttribute("3.0.2 17d7a5")]
 namespace System {
     internal static class AssemblyVersionInformation {
         internal const System.String AssemblyProduct = "Meerkat Security HMAC";
         internal const System.String AssemblyCopyright = "� 2017 Paul Hatcher";
-        internal const System.String AssemblyVersion = "3.0.1";
-        internal const System.String AssemblyFileVersion = "3.0.1";
-        internal const System.String AssemblyInformationalVersion = "3.0.1 ac6b1d";
+        internal const System.String AssemblyVersion = "3.0.2";
+        internal const System.String AssemblyFileVersion = "3.0.2";
+        internal const System.String AssemblyInformationalVersion = "3.0.2 17d7a5";
     }
 }

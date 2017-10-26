@@ -71,7 +71,7 @@ namespace Sample.Web
             container.RegisterType<ISecretRepository, SecretStore>();
             container.RegisterType<ISecretStore, SecretStore>();
 
-            container.RegisterType<IMessageRepresentationBuilder, MessageRepresentationBuilder>();
+            container.RegisterType<IMessageRepresentationBuilder, HmacMessageRepresentationBuilder>();
 
             container.RegisterType<ISignatureCalculator, HmacSignatureCalculator>();
         }

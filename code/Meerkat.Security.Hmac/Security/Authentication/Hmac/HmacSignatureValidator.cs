@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
+
 using Meerkat.Caching;
 using Meerkat.Logging;
 using Meerkat.Net.Http;
@@ -62,13 +63,16 @@ namespace Meerkat.Security.Authentication.Hmac
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
+        /// <remarks>
+        /// We log all failures a Info, except for replay attacks which are logged as Warn as they may be a symptom of an attack.
+        /// </remarks>
         public async Task<bool> IsValid(HttpRequestMessage request)
         {
             // TODO: Generalize so we can using any HMAC scheme.
             if (request.Headers.Authorization == null || request.Headers.Authorization.Scheme != HmacAuthentication.AuthenticationScheme)
             {
                 // No authorization or not our authorization schema, so no 
-                Logger.DebugFormat("Not our authorization schema: {0}", request.RequestUri);
+                Logger.InfoFormat("Not our authorization schema: {0}", request.RequestUri);
                 return false;
             }
 
@@ -76,7 +80,7 @@ namespace Meerkat.Security.Authentication.Hmac
             if (!isDateValid)
             {
                 // Date is not present or valid
-                Logger.DebugFormat("Invalid date: {0}", request.RequestUri);
+                Logger.InfoFormat("Invalid date: {0}", request.RequestUri);
                 return false;
             }
 
@@ -84,7 +88,7 @@ namespace Meerkat.Security.Authentication.Hmac
             if (string.IsNullOrEmpty(userName))
             {
                 // No user name
-                Logger.DebugFormat("No client id: {0}", request.RequestUri);
+                Logger.InfoFormat("No client id: {0}", request.RequestUri);
                 return false;
             }
 
@@ -92,14 +96,14 @@ namespace Meerkat.Security.Authentication.Hmac
             if (secret == null)
             {
                 // Can't find a secret for the user, so no
-                Logger.DebugFormat("No secret for client id {0}: {1}", userName, request.RequestUri);
+                Logger.InfoFormat("No secret for client id {0}: {1}", userName, request.RequestUri);
                 return false;
             }
 
             if (!await request.Content.IsMd5Valid())
             {
                 // MD5 is invalid, so no
-                Logger.DebugFormat("Invalid MD5 hash: {0}", request.RequestUri);
+                Logger.InfoFormat("Invalid MD5 hash: {0}", request.RequestUri);
                 return false;
             }
 
@@ -108,7 +112,7 @@ namespace Meerkat.Security.Authentication.Hmac
             if (representation == null)
             {
                 // Something broken in the representation, so no
-                Logger.DebugFormat("Invalid canonical representation: {0}", request.RequestUri);
+                Logger.InfoFormat("Invalid canonical representation: {0}", request.RequestUri);
                 return false;
             }
 
@@ -126,7 +130,12 @@ namespace Meerkat.Security.Authentication.Hmac
 
             // Validate the signature
             var result = request.Headers.Authorization.Parameter == signature;
-            if (result)
+            if (!result)
+            {
+                // Signatures differ, so no
+                Logger.InfoFormat("Signatures differ {0}: {1}", signature, request.RequestUri);
+            }
+            else 
             {
                 // Store valid signatures to avoid replay attack
                 objectCache.Set(signature, userName, DateTimeOffset.UtcNow.AddMinutes(ValidityPeriod), CacheRegion);

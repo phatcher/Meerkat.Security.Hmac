@@ -17,7 +17,7 @@ namespace Meerkat.Net.Http
                 return response;
             }
 
-            await response.Content.AssignMd5Hash();
+            await response.Content.AssignMd5Hash().ConfigureAwait(false);
 
             return response;
         }

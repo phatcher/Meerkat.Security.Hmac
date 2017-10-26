@@ -41,14 +41,10 @@ namespace Meerkat.Net.Http
         /// <returns></returns>
         public static string MessageDate(this HttpRequestHeaders headers)
         {
-            if (!headers.Date.HasValue)
-            {
-                return null;
-            }
-            var date = headers.Date.Value.UtcDateTime;
+            var date = headers.Date?.UtcDateTime;
 
             // Use RFC 1123 so we are the same as the header value.
-            return date.ToString("r");
+            return date?.ToString("r");
         }
 
         /// <summary>

@@ -1,5 +1,5 @@
-﻿using Meerkat.Security.Authentication;
-using Meerkat.Security.Authentication.Hmac;
+﻿using Meerkat.Security.Authentication.Hmac;
+
 using Microsoft.Owin.Security;
 
 namespace Meerkat.Owin.Security.Infrastructure

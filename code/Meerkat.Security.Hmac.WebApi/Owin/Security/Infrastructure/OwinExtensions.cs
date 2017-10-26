@@ -28,7 +28,7 @@ namespace Meerkat.Owin.Security.Infrastructure
                 return null;
             }
 
-            if (string.IsNullOrEmpty(value[0]))
+            if (string.IsNullOrEmpty(value?[0]))
             {
                 return null;
             }

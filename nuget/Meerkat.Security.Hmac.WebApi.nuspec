@@ -14,7 +14,7 @@
         <tags>AspNet WebApi AspNetWebApi HMAC Security</tags>
         <dependencies>
             <dependency id="Meerkat.Logging" version="1.0.2" />
-            <dependency id="Meerkat.Security.Hmac" version="3.0.0" />
+            <dependency id="Meerkat.Security.Hmac" version="3.0.2" />
             <dependency id="Meerkat.Caching" version="[1.0.6, 2.0)" />
         </dependencies>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>

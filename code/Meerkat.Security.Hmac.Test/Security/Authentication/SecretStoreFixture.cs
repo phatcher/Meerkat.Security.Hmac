@@ -1,4 +1,6 @@
-﻿using Meerkat.Security;
+﻿using System.IO;
+
+using Meerkat.Security;
 using Meerkat.Security.Authentication;
 using NUnit.Framework;
 
@@ -25,6 +27,24 @@ namespace Meerkat.Test.Security.Authentication
             var store = new SecretStore();
 
             var secret = store.ClientSecret("client");
+
+            Assert.That(secret, Is.Null);
+        }
+
+        [Test]
+        public void ClientRemovedOnNullSecret()
+        {
+            var store = new SecretStore();
+
+            store.Assign("client", "A");
+
+            var secret = store.ClientSecret("client");
+
+            Assert.That(secret, Is.EqualTo("A"));
+
+            store.Assign("client", null);
+
+            secret = store.ClientSecret("client");
 
             Assert.That(secret, Is.Null);
         }

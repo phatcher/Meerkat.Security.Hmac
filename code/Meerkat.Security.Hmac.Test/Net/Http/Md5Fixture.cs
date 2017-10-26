@@ -103,5 +103,25 @@ namespace Meerkat.Test.Net.Http
 
             Assert.That(candidate, Is.EqualTo(false));
         }
+
+        [Test]
+        public async Task Md5Byte()
+        {
+            var content = new StringContent("Test");
+
+            var candidate = Convert.ToBase64String(await content.ComputeMd5HashByte());
+
+            Assert.That(candidate, Is.EqualTo("DLxmEfVUC9CAmjiNyVphWw=="), "Hash differs");
+        }
+
+        [Test]
+        public async Task Md5Stream()
+        {
+            var content = new StringContent("Test");
+
+            var candidate = Convert.ToBase64String(await content.ComputeMd5HashStream());
+
+            Assert.That(candidate, Is.EqualTo("DLxmEfVUC9CAmjiNyVphWw=="), "Hash differs");
+        }
     }
 }

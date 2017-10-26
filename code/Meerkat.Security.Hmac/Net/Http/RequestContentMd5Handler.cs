@@ -11,16 +11,12 @@ namespace Meerkat.Net.Http
     {
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if (request.Content == null)
+            if (request.Content != null)
             {
-                return await base.SendAsync(request, cancellationToken);
+                await request.Content.AssignMd5Hash().ConfigureAwait(false);
             }
 
-            await request.Content.AssignMd5Hash();
-
-            var response = await base.SendAsync(request, cancellationToken);
-
-            return response;
+            return await base.SendAsync(request, cancellationToken);
         }
     }
 }

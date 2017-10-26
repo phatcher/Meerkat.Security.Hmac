@@ -15,7 +15,7 @@ namespace Meerkat.Net.Http
         /// <returns></returns>
         public static string Md5Base64(this HttpContent content)
         {
-            var md5 = content == null || content.Headers.ContentMD5 == null
+            var md5 = content?.Headers.ContentMD5 == null
                         ? string.Empty
                         : Convert.ToBase64String(content.Headers.ContentMD5);
 
@@ -43,7 +43,7 @@ namespace Meerkat.Net.Http
                 return true;
             }
 
-            var hash = await content.ComputeMd5Hash();
+            var hash = await content.ComputeMd5HashByte().ConfigureAwait(false);
 
             return hash.SequenceEqual(hashHeader);
         }
@@ -55,7 +55,7 @@ namespace Meerkat.Net.Http
         /// <returns></returns>
         public static async Task AssignMd5Hash(this HttpContent httpContent)
         {
-            var hash = await httpContent.ComputeMd5Hash();
+            var hash = await httpContent.ComputeMd5Hash().ConfigureAwait(false);
 
             httpContent.Headers.ContentMD5 = hash;
         }
@@ -67,9 +67,35 @@ namespace Meerkat.Net.Http
         /// <returns></returns>
         public static async Task<byte[]> ComputeMd5Hash(this HttpContent httpContent)
         {
+            // NB Using HashStream here causes some tests to fail
+            return await httpContent.ComputeMd5HashByte().ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Compute the MD5 hash of the content.
+        /// </summary>
+        /// <param name="httpContent"></param>
+        /// <returns></returns>
+        public static async Task<byte[]> ComputeMd5HashStream(this HttpContent httpContent)
+        {
             using (var md5 = MD5.Create())
             {
-                var content = await httpContent.ReadAsByteArrayAsync();
+                var content = await httpContent.ReadAsStreamAsync().ConfigureAwait(false);
+                var hash = md5.ComputeHash(content);
+                return hash;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="httpContent"></param>
+        /// <returns></returns>
+        public static async Task<byte[]> ComputeMd5HashByte(this HttpContent httpContent)
+        {
+            using (var md5 = MD5.Create())
+            {
+                var content = await httpContent.ReadAsByteArrayAsync().ConfigureAwait(false);
                 var hash = md5.ComputeHash(content);
                 return hash;
             }

@@ -35,7 +35,7 @@ namespace Sample.Client
         public static void RegisterTypes(IUnityContainer container)
         {
             container.RegisterType<ISecretStore, SecretStore>();
-            container.RegisterType<IMessageRepresentationBuilder, MessageRepresentationBuilder>();
+            container.RegisterType<IMessageRepresentationBuilder, HmacMessageRepresentationBuilder>();
             container.RegisterType<ISignatureCalculator, HmacSignatureCalculator>();
 
             container.RegisterType<HmacSigningHandler>();

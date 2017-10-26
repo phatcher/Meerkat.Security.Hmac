@@ -305,7 +305,7 @@ namespace Meerkat.Test.Integration
 
         private HttpClient HmacClient(HttpMessageHandler baseHandler)
         {
-            var client = new HttpClient(ClientHandler(baseHandler))
+            var client = new HttpClient(ClientHandler(baseHandler), false)
             {
                 // NB Dummy base address is mandatory for this to work.
                 BaseAddress = new Uri("http://sample.com")
@@ -318,14 +318,13 @@ namespace Meerkat.Test.Integration
 
         private HttpMessageHandler ClientHandler(HttpMessageHandler baseHandler)
         {
-            var handler1 = new RequestContentMd5Handler();
-            // NB Need a new one each time as it gets disposed
-            var handler2 = Container.Resolve<HmacSigningHandler>();
+            var md5Handler = new RequestContentMd5Handler();
+            var signingHandler = Container.Resolve<HmacSigningHandler>();
 
-            handler1.InnerHandler = handler2;
-            handler2.InnerHandler = baseHandler;
+            md5Handler.InnerHandler = signingHandler;
+            signingHandler.InnerHandler = baseHandler;
 
-            return handler1;
+            return md5Handler;
         }
     }
 }
