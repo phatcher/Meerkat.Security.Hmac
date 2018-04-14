@@ -4,6 +4,7 @@ using System.Security;
 using System.Security.Cryptography;
 using System.Text;
 
+#if net462
 namespace Meerkat.Security
 {
     internal static class DpapiExtensions
@@ -119,3 +120,4 @@ namespace Meerkat.Security
         }
     }
 }
+#endif

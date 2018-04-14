@@ -1,108 +1,40 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\PdbGit.3.0.41\build\PdbGit.props" Condition="Exists('..\..\packages\PdbGit.3.0.41\build\PdbGit.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D724FF9B-D546-4482-9CCF-9C36578BA97A}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFrameworks>net451</TargetFrameworks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>Meerkat</RootNamespace>
-    <AssemblyName>Meerkat.Security.Hmac</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <Description>An implementation of HMAC for ASP.NET</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>Meerkat.Security.Hmac</PackageId>
+    <Title>Meerkat Security</Title>
+    <Copyright>Copyright © 2016 Paul Hatcher</Copyright>
+    <PackageLicenseUrl>http://opensource.org/licenses/mit-license.php</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/phatcher/Meerkat.Security.Hmac</PackageProjectUrl>
+    <PackageRequireLicenceAcceptance>False</PackageRequireLicenceAcceptance>
+    <PackageTags>AspNet WebApi AspNetWebApi HMAC Security</PackageTags>
+    <RepositoryUrl>https://github.com/phatcher/Meerkat.Security.Hmac</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Authors>Paul Hatcher</Authors>
+	<OutputPath>$(SolutionDir)/build/$(Configuration)/$(AssemblyName)/$(TargetFramework)/</OutputPath>
+	<OutDir>$(OutputPath)</OutDir>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+  <ItemGroup>
+    <PackageReference Include="Meerkat.Caching" Version="2.0.0" />
+    <PackageReference Include="Meerkat.Logging" Version="2.0.0" />
+    <PackageReference Include="System.Net.Http" Version="4.3.3" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Meerkat.Security.Hmac.xml</DocumentationFile>
+    <DocumentationFile>$(SolutionDir)/build/$(Configuration)/$(AssemblyName)/$(TargetFramework)/Meerkat.Security.Hmac.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Meerkat.Caching, Version=1.0.6.0, Culture=neutral, PublicKeyToken=ac4b64546145efb9, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Meerkat.Caching.1.0.6\lib\net45\Meerkat.Caching.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Meerkat.Logging, Version=1.0.2.0, Culture=neutral, PublicKeyToken=48420f6ca18bf904, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Meerkat.Logging.1.0.2\lib\net45\Meerkat.Logging.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Caching" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <Compile Include="..\SolutionInfo.cs" Link="Properties\SolutionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SolutionInfo.cs">
-      <Link>Properties\SolutionInfo.cs</Link>
-    </Compile>
-    <Compile Include="Net\Http\HmacSigningHandler.cs" />
-    <Compile Include="Net\Http\HttpContentExtensions.cs" />
-    <Compile Include="Net\Http\HttpMessageExtensions.cs" />
-    <Compile Include="Net\Http\RequestContentMd5Handler.cs" />
-    <Compile Include="Net\Http\ResponseContentMd5Handler.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security\Authentication\CachingSecretRepository.cs" />
-    <Compile Include="Security\Authentication\Hmac\HmacAuthentication.cs" />
-    <Compile Include="Security\Authentication\MessageRepresentationBuilder.cs" />
-    <Compile Include="Security\Authorization\IRequestClaimsProvider.cs" />
-    <Compile Include="Security\Authentication\Hmac\HmacMessageRepresentationBuilder.cs" />
-    <Compile Include="Security\DpapiExtensions.cs" />
-    <Compile Include="Security\Authentication\Hmac\HmacAuthenticator.cs" />
-    <Compile Include="Security\Authentication\Hmac\HmacSignatureCalculator.cs" />
-    <Compile Include="Security\Authentication\Hmac\HmacSignatureValidator.cs" />
-    <Compile Include="Security\Authentication\ISignatureValidator.cs" />
-    <Compile Include="Security\Authentication\Hmac\IHmacAuthenticator.cs" />
-    <Compile Include="Security\Authentication\IMessageRepresentationBuilder.cs" />
-    <Compile Include="Security\Authentication\ISecretRepository.cs" />
-    <Compile Include="Security\Authentication\ISecretStore.cs" />
-    <Compile Include="Security\Authentication\ISignatureCalculator.cs" />
-    <Compile Include="Security\Authorization\RequestClaimsProvider.cs" />
-    <Compile Include="Security\Authentication\SecretStore.cs" />
+      <Reference Include="System.Configuration" Condition="'$(TargetFramework)' != 'netstandard2.0'" />
+      <Reference Include="System.Runtime.Caching" Condition="'$(TargetFramework)' != 'netstandard2.0'" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\PdbGit.3.0.41\build\PdbGit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\PdbGit.3.0.41\build\PdbGit.props'))" />
-    <Error Condition="!Exists('..\..\packages\PdbGit.3.0.41\build\PdbGit.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\PdbGit.3.0.41\build\PdbGit.targets'))" />
-  </Target>
-  <Import Project="..\..\packages\PdbGit.3.0.41\build\PdbGit.targets" Condition="Exists('..\..\packages\PdbGit.3.0.41\build\PdbGit.targets')" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

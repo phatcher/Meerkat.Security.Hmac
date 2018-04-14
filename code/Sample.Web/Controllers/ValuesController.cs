@@ -11,7 +11,7 @@ namespace Sample.Web.Controllers
         [Route("secure")]
         public IHttpActionResult Secure()
         {
-            // NB Not sure why User is null - thoughy default principal would be assigned.
+            // NB Not sure why User is null - thought default principal would be assigned.
             if (User == null || User.Identity.IsAuthenticated == false)
             {
                 return Unauthorized();
