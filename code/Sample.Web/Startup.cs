@@ -9,10 +9,11 @@ using Meerkat.Security.Web.Http;
 
 using Microsoft.Owin;
 using Microsoft.Owin.Extensions;
-using Microsoft.Practices.Unity.Mvc;
-using Microsoft.Practices.Unity.WebApi;
 
 using Owin;
+
+using Unity.AspNet.Mvc;
+using Unity.AspNet.WebApi;
 
 [assembly: OwinStartup(typeof(Sample.Web.Startup))]
 
@@ -102,7 +103,7 @@ namespace Sample.Web
             {
                 FilterProviders.Providers.Remove(FilterProviders.Providers.OfType<FilterAttributeFilterProvider>().First());
                 FilterProviders.Providers.Add(new UnityFilterAttributeFilterProvider(container));
-                DependencyResolver.SetResolver(new Microsoft.Practices.Unity.Mvc.UnityDependencyResolver(container));
+                DependencyResolver.SetResolver(new Unity.AspNet.Mvc.UnityDependencyResolver(container));
 
                 AreaRegistration.RegisterAllAreas();
                 FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

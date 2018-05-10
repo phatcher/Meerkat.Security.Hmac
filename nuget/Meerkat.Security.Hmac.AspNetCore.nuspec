@@ -1,0 +1,9 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Meerkat.Security.Hmac.AspNetCore</id>
+        <title>Meerkat Security HMAC AspNetCore</title>
+        <version>1.0.0</version>
+        <owners>Paul Hatcher</owners>
+    </metadata>
+</package>

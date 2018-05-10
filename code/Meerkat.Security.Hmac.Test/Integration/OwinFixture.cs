@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
-
 using NUnit.Framework;
 
-namespace Meerkat.Test.Integration
+namespace Meerkat.Hmac.Test.Integration
 {
     [TestFixture]
     public class OwinFixture : HmacFixture

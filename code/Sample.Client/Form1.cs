@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 using Meerkat.Net.Http;
 
-using Microsoft.Practices.Unity;
+using Unity;
 
 namespace Sample.Client
 {

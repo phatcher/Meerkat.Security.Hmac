@@ -2,9 +2,9 @@
 using System.Web.Http;
 using System.Web.Http.Filters;
 
-using Microsoft.Practices.Unity.WebApi;
-
 using Sample.Web.Http;
+
+using Unity.AspNet.WebApi;
 
 namespace Sample.Web
 {

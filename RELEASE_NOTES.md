@@ -1,5 +1,8 @@
+### 3.0.4 (2018-07-25)
+* Some support for netstandard20
+
 ### 3.0.3 (2018-04-14)
-* Update dependencies to latest, some support for netstandard20
+* Update dependencies to latest, convert projects to VS2017 format
 
 ### 3.0.2 (2017-10-24)
 * Use ConfigurAwait(false) on MD5 hash methods

@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-
 using Meerkat.Owin.Security.Infrastructure;
-
 using Microsoft.Owin;
-
 using NUnit.Framework;
 
-namespace Meerkat.Test.Owin.Security.Infrastructure
+namespace Meerkat.Hmac.Test.Owin.Security.Infrastructure
 {
     [TestFixture]
     public class AuthorizationHeaderFixture

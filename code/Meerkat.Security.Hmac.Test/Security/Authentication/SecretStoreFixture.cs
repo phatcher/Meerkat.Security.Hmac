@@ -1,10 +1,7 @@
-﻿using System.IO;
-
-using Meerkat.Security;
-using Meerkat.Security.Authentication;
+﻿using Meerkat.Security.Authentication;
 using NUnit.Framework;
 
-namespace Meerkat.Test.Security.Authentication
+namespace Meerkat.Hmac.Test.Security.Authentication
 {
     [TestFixture]
     public class SecretStoreFixture

@@ -29,9 +29,7 @@ namespace Meerkat.Net.Http
         /// <param name="secretRepository"></param>
         /// <param name="representationBuilder"></param>
         /// <param name="signatureCalculator"></param>
-        public HmacSigningHandler(ISecretRepository secretRepository,
-                              IMessageRepresentationBuilder representationBuilder,
-                              ISignatureCalculator signatureCalculator)
+        public HmacSigningHandler(ISecretRepository secretRepository, IMessageRepresentationBuilder representationBuilder, ISignatureCalculator signatureCalculator)
         {
             this.secretRepository = secretRepository;
             this.representationBuilder = representationBuilder;

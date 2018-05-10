@@ -8,6 +8,7 @@ namespace Meerkat.Owin.Security.Infrastructure
     {
         public HmacAuthenticationOptions() : base(HmacAuthentication.AuthenticationScheme)
         {
+            // TODO: Should we be active or passive?
             AuthenticationMode = AuthenticationMode.Active;
         }
     }

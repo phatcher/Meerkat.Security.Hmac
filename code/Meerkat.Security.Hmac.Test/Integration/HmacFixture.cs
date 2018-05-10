@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using Meerkat.Net.Http;
 using Meerkat.Security.Authentication;
 using Meerkat.Security.Authentication.Hmac;
+
 using Microsoft.Owin.Testing;
-using Microsoft.Practices.Unity;
 
 using NUnit.Framework;
 
-namespace Meerkat.Test.Integration
+using Unity;
+
+namespace Meerkat.Hmac.Test.Integration
 {
     public class HmacFixture
     {

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Net.Http;
-
 using Meerkat.Net.Http;
-
 using NUnit.Framework;
 
-namespace Meerkat.Test.Net.Http
+namespace Meerkat.Hmac.Test.Net.Http
 {
     [TestFixture]
     public class RequestHeaderFixture

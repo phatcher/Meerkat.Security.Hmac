@@ -5,9 +5,11 @@ using Meerkat.Security;
 using Meerkat.Security.Authentication;
 using Meerkat.Security.Authentication.Hmac;
 using Meerkat.Security.Authorization;
-using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
+
 using Sample.Web.Services;
+using Unity;
+using Unity.Injection;
+using Unity.Lifetime;
 
 namespace Sample.Web
 {
@@ -58,11 +60,10 @@ namespace Sample.Web
         /// <summary>
         /// Get the service locator from the container
         /// </summary>
-        public static IServiceLocator ServiceLocator
-        {
-            get { return GetConfiguredContainer().Resolve<IServiceLocator>(); }
-        }
-
+        //public static IServiceLocator ServiceLocator
+        //{
+        //    get { return GetConfiguredContainer().Resolve<IServiceLocator>(); }
+        //}
 
         public static void RegisterHmacCore(IUnityContainer container)
         {
