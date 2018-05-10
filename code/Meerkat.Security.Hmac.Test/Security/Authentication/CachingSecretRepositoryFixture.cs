@@ -1,13 +1,10 @@
 ﻿using System;
-
 using Meerkat.Caching;
 using Meerkat.Security.Authentication;
-
 using Moq;
-
 using NUnit.Framework;
 
-namespace Meerkat.Test.Security.Authentication
+namespace Meerkat.Hmac.Test.Security.Authentication
 {
     [TestFixture]
     public class CachingSecretRepositoryFixture

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net451</TargetFrameworks>
+    <TargetFrameworks>net451;net462;netstandard20</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>Meerkat</RootNamespace>
     <Description>An implementation of HMAC for ASP.NET</Description>
@@ -21,7 +21,10 @@
   <ItemGroup>
     <PackageReference Include="Meerkat.Caching" Version="2.0.0" />
     <PackageReference Include="Meerkat.Logging" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.4" />
     <PackageReference Include="System.Net.Http" Version="4.3.3" />
+    <!--<PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.0-rc1-final" Condition="'$(TargetFramework)' == 'netstandard20'" />-->
+    <PackageReference Include="Microsoft.Extensions.Http" Version="2.1.0-rc1-final" Condition="'$(TargetFramework)' == 'netstandard20'" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;DEBUG</DefineConstants>
@@ -34,7 +37,7 @@
     <Compile Include="..\SolutionInfo.cs" Link="Properties\SolutionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-      <Reference Include="System.Configuration" Condition="'$(TargetFramework)' != 'netstandard2.0'" />
-      <Reference Include="System.Runtime.Caching" Condition="'$(TargetFramework)' != 'netstandard2.0'" />
+      <Reference Include="System.Configuration" Condition="'$(TargetFramework)' != 'netstandard20'" />
+      <Reference Include="System.Runtime.Caching" Condition="'$(TargetFramework)' != 'netstandard20'" />
   </ItemGroup>
 </Project>

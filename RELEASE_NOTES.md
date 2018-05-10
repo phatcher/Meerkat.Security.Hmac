@@ -1,3 +1,6 @@
+### 3.0.4 (2018-05-10)
+* Full support for netstandard20
+
 ### 3.0.3 (2018-04-14)
 * Update dependencies to latest, some support for netstandard20
 

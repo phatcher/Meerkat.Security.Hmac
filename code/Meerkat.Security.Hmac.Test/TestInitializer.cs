@@ -1,19 +1,20 @@
 ﻿using System.Diagnostics;
-
 using log4net;
-
 using NUnit.Framework;
 
-[SetUpFixture]
-public class TestInitializer
+namespace Meerkat.Hmac.Test
 {
-    [OneTimeSetUp]
-    public void Initialize()
+    [SetUpFixture]
+    public class TestInitializer
     {
-        log4net.Config.XmlConfigurator.Configure();
-        if (LogManager.GetRepository().Configured)
+        [OneTimeSetUp]
+        public void Initialize()
         {
-            Debug.WriteLine("configured");
+            log4net.Config.XmlConfigurator.Configure();
+            if (LogManager.GetRepository().Configured)
+            {
+                Debug.WriteLine("configured");
+            }
         }
     }
 }

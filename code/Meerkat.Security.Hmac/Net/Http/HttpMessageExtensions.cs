@@ -21,9 +21,7 @@ namespace Meerkat.Net.Http
         /// <returns></returns>
         public static IEnumerable<T> GetValues<T>(this HttpRequestHeaders headers, string name)
         {
-            IEnumerable<string> values;
-
-            if (!headers.TryGetValues(name, out values))
+            if (!headers.TryGetValues(name, out var values))
             {
                 yield break;
             }
@@ -116,8 +114,7 @@ namespace Meerkat.Net.Http
         /// <returns></returns>
         public static IEnumerable<Claim> ToClaims(this HttpRequestHeaders headers, string headerName, string claimType, string issuer = null, char separator = ',', bool trim = true)
         {
-            IEnumerable<string> values;
-            if (!headers.TryGetValues(headerName, out values))
+            if (!headers.TryGetValues(headerName, out var values))
             {
                 yield break;
             }

@@ -1,15 +1,12 @@
-﻿using System;
-using System.Diagnostics;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
-using log4net;
 using Meerkat.Security.Authentication;
 using Meerkat.Security.Authentication.Hmac;
 using Meerkat.Security.Authorization;
 using Moq;
 using NUnit.Framework;
 
-namespace Meerkat.Test.Security.Authentication.Hmac
+namespace Meerkat.Hmac.Test.Security.Authentication.Hmac
 {
     [TestFixture]
     public class HmacAuthenticatorFixture

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using CommonServiceLocator;
 
-using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
+using Unity;
+using Unity.Lifetime;
+using Unity.ServiceLocation;
 
 namespace Sample.Web.Services
 {

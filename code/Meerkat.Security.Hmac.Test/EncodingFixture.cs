@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using NUnit.Framework;
 
-namespace Meerkat.Test
+namespace Meerkat.Hmac.Test
 {
     [TestFixture]
     public class EncodingFixture
