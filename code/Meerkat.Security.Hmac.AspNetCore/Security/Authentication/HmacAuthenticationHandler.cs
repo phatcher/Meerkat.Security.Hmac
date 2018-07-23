@@ -9,14 +9,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.WebApiCompatShim;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Net.Http.Headers;
 
 namespace Meerkat.Security.Authentication
 {
     public class HmacAuthenticationHandler : AuthenticationHandler<HmacAuthenticationOptions>
     {
         private readonly IHmacAuthenticator authenticator;
-        private string reasonPhrase;
 
         public HmacAuthenticationHandler(IHmacAuthenticator authenticator, IOptionsMonitor<HmacAuthenticationOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock) :
             base(options, logger, encoder, clock)
@@ -27,17 +25,9 @@ namespace Meerkat.Security.Authentication
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
             // Do we have authorization
-            if (!Request.Headers.TryGetValue(HeaderNames.Authorization, out var header))
+            if (!AuthenticationHeaderValue.TryParse(Request.Headers["Authorization"], out var authorization))
             {
-                return AuthenticateResult.NoResult();
-                //return AuthenticateResult.Fail("Cannot read authorization header.");
-            }
-
-            reasonPhrase = "Unauthorized";
-
-            if (!AuthenticationHeaderValue.TryParse(Request.Headers["Authorization"], out AuthenticationHeaderValue authorization))
-            {
-                //Invalid Authorization header
+                // No Authorization header, so ignore
                 return AuthenticateResult.NoResult();
             }
 
@@ -52,8 +42,7 @@ namespace Meerkat.Security.Authentication
             {
                 // Authentication was attempted but failed. Set ErrorResult to indicate an error.
                 Logger.LogWarning("Missing credentials");
-                reasonPhrase = "Missing credentials";
-                return AuthenticateResult.NoResult();
+                return AuthenticateResult.Fail("Missing credentials");
             }
 
             var httpRequest = new HttpRequestMessageFeature(Context);
@@ -62,8 +51,7 @@ namespace Meerkat.Security.Authentication
             {
                 // Authentication was attempted but failed. Set ErrorResult to indicate an error.
                 Logger.LogWarning("Invalid signature");
-                reasonPhrase = "Invalid signature";
-                return AuthenticateResult.NoResult();
+                return AuthenticateResult.Fail("Invalid signature");
             }
 
             var principal = new ClaimsPrincipal(identity);

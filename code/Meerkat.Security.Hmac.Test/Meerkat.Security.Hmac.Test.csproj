@@ -8,8 +8,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="Moq" Version="4.8.2" />
-    <PackageReference Include="Microsoft.Net.Test.Sdk" Version="15.7.0" />
+    <PackageReference Include="Moq" Version="4.8.3" />
+    <PackageReference Include="Microsoft.Net.Test.Sdk" Version="15.7.2" />
     <PackageReference Include="Microsoft.Owin.Testing" Version="4.0.0" />
     <PackageReference Include="NCheck" Version="3.0.0" />
     <PackageReference Include="NUnit" Version="3.10.1" />

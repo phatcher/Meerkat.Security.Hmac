@@ -1,21 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>Meerkat.Hmac.Test</RootNamespace>
 	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	<OutputPath>$(SolutionDir)/build/$(Configuration)/$(AssemblyName)/$(TargetFramework)/</OutputPath>
 	<OutDir>$(OutputPath)</OutDir>      
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\SolutionInfo.cs" Link="Properties\SolutionInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="Moq" Version="4.8.2" />
-    <PackageReference Include="Microsoft.Net.Test.Sdk" Version="15.7.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.1.0" />
+    <PackageReference Include="Moq" Version="4.8.3" />
+    <PackageReference Include="Microsoft.Net.Test.Sdk" Version="15.7.2" />
     <PackageReference Include="NCheck" Version="3.0.0" />
     <PackageReference Include="NUnit" Version="3.10.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
     <!--<PackageReference Include="Unity" Version="[4.0.1, 5.0)" />-->
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SolutionInfo.cs" Link="Properties\SolutionInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Meerkat.Security.Hmac.AspNetCore\Meerkat.Security.Hmac.AspNetCore.csproj" />
   </ItemGroup>
 </Project>
