@@ -6,7 +6,7 @@ namespace Meerkat.Security.Authentication
 {
     public static class AuthenticationBuilderExtensions
     {
-        public static AuthenticationBuilder AddHmac(this AuthenticationBuilder builder, Action<HmacAuthenticationOptions> configureOptions)
+        public static AuthenticationBuilder AddHmacAuthentication(this AuthenticationBuilder builder, Action<HmacAuthenticationOptions> configureOptions)
         {
             return builder.AddScheme<HmacAuthenticationOptions, HmacAuthenticationHandler>(HmacAuthenticationOptions.DefaultScheme, configureOptions);
         }

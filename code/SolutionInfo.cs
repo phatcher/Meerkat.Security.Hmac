@@ -2,16 +2,16 @@
 using System.Reflection;
 
 [assembly: AssemblyProductAttribute("Meerkat.Security.Hmac")]
-[assembly: AssemblyCopyrightAttribute("Copyright � 2016 Paul Hatcher")]
-[assembly: AssemblyVersionAttribute("3.0.3")]
-[assembly: AssemblyFileVersionAttribute("3.0.3")]
-[assembly: AssemblyInformationalVersionAttribute("3.0.3 ec836f")]
+[assembly: AssemblyCopyrightAttribute("Copyright © 2016 Paul Hatcher")]
+[assembly: AssemblyVersionAttribute("3.0.4")]
+[assembly: AssemblyFileVersionAttribute("3.0.4")]
+[assembly: AssemblyInformationalVersionAttribute("3.0.4 7b73af")]
 namespace System {
     internal static class AssemblyVersionInformation {
         internal const System.String AssemblyProduct = "Meerkat.Security.Hmac";
-        internal const System.String AssemblyCopyright = "Copyright � 2016 Paul Hatcher";
-        internal const System.String AssemblyVersion = "3.0.3";
-        internal const System.String AssemblyFileVersion = "3.0.3";
-        internal const System.String AssemblyInformationalVersion = "3.0.3 ec836f";
+        internal const System.String AssemblyCopyright = "Copyright © 2016 Paul Hatcher";
+        internal const System.String AssemblyVersion = "3.0.4";
+        internal const System.String AssemblyFileVersion = "3.0.4";
+        internal const System.String AssemblyInformationalVersion = "3.0.4 7b73af";
     }
 }
