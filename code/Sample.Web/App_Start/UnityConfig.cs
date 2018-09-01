@@ -85,8 +85,8 @@ namespace Sample.Web
         {
             RegisterHmacCore(container);
 
-            container.RegisterType<ICache>(
-                new InjectionFactory(x => MemoryObjectCacheFactory.Default()));
+            //container.RegisterType<ICache>(
+            //    new InjectionFactory(x => MemoryObjectCacheFactory.Default()));
 
             container.RegisterType<ISignatureValidator, HmacSignatureValidator>(
                 new InjectionConstructor(

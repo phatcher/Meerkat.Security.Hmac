@@ -49,7 +49,7 @@ namespace Sample.AspNetCore
                 options.Authority = $"https://login.microsoftonline.com/tfp/{Configuration["AzureAdB2C:Tenant"]}/{Configuration["AzureAdB2C:Policy"]}/v2.0/";
                 options.Audience = Configuration["AzureAdB2C:ClientId"];
             })
-            .AddHmac(options =>
+            .AddHmacAuthentication(options =>
             {
             });
 
