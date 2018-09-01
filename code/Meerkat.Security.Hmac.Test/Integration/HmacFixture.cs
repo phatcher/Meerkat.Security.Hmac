@@ -19,9 +19,9 @@ namespace Meerkat.Hmac.Test.Integration
     {
         protected IUnityContainer Container { get; set; }
 
-        public async Task OnAllowAnonymous()
+        protected async Task OnAllowAnonymous()
         {
-            using (var server = TestServer.Create<Sample.Web.Startup>())
+            using (var server = InitializeWeb())
             {
                 var client = HmacClient(server.Handler);
                 var request = RequestMessage("/api/values/insecure");
@@ -35,9 +35,9 @@ namespace Meerkat.Hmac.Test.Integration
             }
         }
 
-        public async Task OnSecured()
+        protected async Task OnSecured()
         {
-            using (var server = TestServer.Create<Sample.Web.Startup>())
+            using (var server = InitializeWeb())
             {
                 AssignSecret("1234", "1234", true);
 
@@ -53,9 +53,9 @@ namespace Meerkat.Hmac.Test.Integration
             }
         }
 
-        public async Task OnSecuredZeroLength()
+        protected async Task OnSecuredZeroLength()
         {
-            using (var server = TestServer.Create<Sample.Web.Startup>())
+            using (var server = InitializeWeb())
             {
                 AssignSecret("1234", "1234", true);
 
@@ -71,9 +71,9 @@ namespace Meerkat.Hmac.Test.Integration
             }
         }
 
-        public async Task OnSecureNoHmac()
+        protected async Task OnSecureNoHmac()
         {
-            using (var server = TestServer.Create<Sample.Web.Startup>())
+            using (var server = InitializeWeb())
             {
                 var client = HmacClient(server.Handler);
                 var request = RequestMessage("/api/values/secure");
@@ -85,9 +85,9 @@ namespace Meerkat.Hmac.Test.Integration
             }
         }
 
-        public async Task OnPost()
+        protected async Task OnPost()
         {
-            using (var server = TestServer.Create<Sample.Web.Startup>())
+            using (var server = InitializeWeb())
             {
                 AssignSecret("1234", "1234", true);
 
@@ -103,9 +103,9 @@ namespace Meerkat.Hmac.Test.Integration
             }
         }
 
-        public async Task OnPostZeroLength()
+        protected async Task OnPostZeroLength()
         {
-            using (var server = TestServer.Create<Sample.Web.Startup>())
+            using (var server = InitializeWeb())
             {
                 AssignSecret("1234", "1234", true);
 
@@ -121,9 +121,9 @@ namespace Meerkat.Hmac.Test.Integration
             }
         }
 
-        public async Task OnPostNoHmac()
+        protected async Task OnPostNoHmac()
         {
-            using (var server = TestServer.Create<Sample.Web.Startup>())
+            using (var server = InitializeWeb())
             {
                 var client = HmacClient(server.Handler);
                 var request = RequestMessage("/api/values/update", "1234", method: "POST", content: "{ B = 1 }");
@@ -135,9 +135,9 @@ namespace Meerkat.Hmac.Test.Integration
             }
         }
 
-        public async Task OnInvalidScheme()
+        protected async Task OnInvalidScheme()
         {
-            using (var server = TestServer.Create<Sample.Web.Startup>())
+            using (var server = InitializeWeb())
             {
                 var client = HmacClient(server.Handler);
                 var request = RequestMessage("/api/values/secure");
@@ -153,9 +153,9 @@ namespace Meerkat.Hmac.Test.Integration
             }
         }
 
-        public async Task OnInvalidClientId()
+        protected async Task OnInvalidClientId()
         {
-            using (var server = TestServer.Create<Sample.Web.Startup>())
+            using (var server = InitializeWeb())
             {
                 // We sign it, but the server doesn't know this client id
                 AssignSecret("1234", "1234", false);
@@ -170,9 +170,9 @@ namespace Meerkat.Hmac.Test.Integration
             }
         }
 
-        public async Task OnMissingSignature()
+        protected async Task OnMissingSignature()
         {
-            using (var server = TestServer.Create<Sample.Web.Startup>())
+            using (var server = InitializeWeb())
             {
                 var client = HmacClient(server.Handler);
                 var request = RequestMessage("/api/values/secure");
@@ -188,9 +188,9 @@ namespace Meerkat.Hmac.Test.Integration
             }
         }
 
-        public async Task OnReplayAttack()
+        protected async Task OnReplayAttack()
         {
-            using (var server = TestServer.Create<Sample.Web.Startup>())
+            using (var server = InitializeWeb())
             {
                 AssignSecret("1234", "1234", true);
 
@@ -209,13 +209,13 @@ namespace Meerkat.Hmac.Test.Integration
             }
         }
 
-        public async Task OnNoncedRequests()
+        protected async Task OnNoncedRequests()
         {
         }
 
-        public async Task OnMessageDateTooEarly()
+        protected async Task OnMessageDateTooEarly()
         {
-            using (var server = TestServer.Create<Sample.Web.Startup>())
+            using (var server = InitializeWeb())
             {
                 AssignSecret("1234", "1234", true);
 
@@ -229,9 +229,9 @@ namespace Meerkat.Hmac.Test.Integration
             }
         }
 
-        public async Task OnMessageDateTooLate()
+        protected async Task OnMessageDateTooLate()
         {
-            using (var server = TestServer.Create<Sample.Web.Startup>())
+            using (var server = InitializeWeb())
             {
                 AssignSecret("1234", "1234", true);
 
@@ -245,10 +245,34 @@ namespace Meerkat.Hmac.Test.Integration
             }
         }
 
+        protected void CheckTransient<T>()
+        {
+            var value = Container.Resolve<T>();
+            var second = Container.Resolve<T>();
+
+            Assert.That(value, Is.Not.SameAs(second), "Values same");
+        }
+
+        protected void CheckSingleton<T>()
+        {
+            var value = Container.Resolve<T>();
+            var second = Container.Resolve<T>();
+
+            Assert.That(value, Is.SameAs(second), "Values not same");
+        }
+
+        protected virtual TestServer InitializeWeb()
+        {
+            var server = TestServer.Create<Sample.Web.Startup>();
+            //Container = Sample.Web.UnityConfig.Container;
+
+            return server;
+        }
+
         [SetUp]
         public virtual void SetUp()
         {
-            // NB Need this to ensure we don't retain state between tests
+            // Enough that we can sign HMAC messages
             Container = new UnityContainer();
             Sample.Web.UnityConfig.RegisterHmacCore(Container);
             Container.RegisterType<HmacSigningHandler, HmacSigningHandler>();

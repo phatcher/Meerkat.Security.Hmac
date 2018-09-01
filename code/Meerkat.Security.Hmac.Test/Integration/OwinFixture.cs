@@ -1,4 +1,8 @@
 ﻿using System.Threading.Tasks;
+
+using Meerkat.Security.Authentication;
+using Meerkat.Security.Authentication.Hmac;
+
 using NUnit.Framework;
 
 namespace Meerkat.Hmac.Test.Integration
@@ -91,6 +95,48 @@ namespace Meerkat.Hmac.Test.Integration
         //{
         //    await OnMessageDateTooLate();
         //}
+
+        [Test]
+        public void ResolveSecretStore()
+        {
+            Container = Sample.Web.UnityConfig.GetConfiguredContainer();
+            CheckSingleton<ISecretStore>();
+        }
+
+        [Test]
+        public void ResolveSecretRepository()
+        {
+            Container = Sample.Web.UnityConfig.GetConfiguredContainer();
+            CheckSingleton<ISecretRepository>();
+        }
+
+        [Test]
+        public void ResolveMessageRepresentationBuilder()
+        {
+            Container = Sample.Web.UnityConfig.GetConfiguredContainer();
+            CheckTransient<IMessageRepresentationBuilder>();
+        }
+
+        [Test]
+        public void ResolveSignatureCalculator()
+        {
+            Container = Sample.Web.UnityConfig.GetConfiguredContainer();
+            CheckTransient<ISignatureCalculator>();
+        }
+
+        [Test]
+        public void ResolveSignatureValidator()
+        {
+            Container = Sample.Web.UnityConfig.GetConfiguredContainer();
+            CheckTransient<ISignatureValidator>();
+        }
+
+        [Test]
+        public void ResolveHmacAuthenticator()
+        {
+            Container = Sample.Web.UnityConfig.GetConfiguredContainer();
+            CheckTransient<IHmacAuthenticator>();
+        }
 
         public override void SetUp()
         {

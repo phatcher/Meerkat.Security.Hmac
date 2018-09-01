@@ -1,3 +1,6 @@
+### 3.1.0 (2018-09-01)
+* Target net462, net471 and net472
+
 ### 3.0.4 (2018-07-25)
 * Some support for netstandard20
 
