@@ -56,8 +56,8 @@
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="Meerkat.Caching" Version="2.1.1" />
-    <PackageReference Include="Meerkat.Logging" Version="2.2.0" />
+    <PackageReference Include="Meerkat.Caching" Version="2.1.2" />
+    <PackageReference Include="Meerkat.Logging" Version="2.2.1" />
     <PackageReference Include="Meerkat.Security.Mvc" Version="3.1.0" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.7.2" />
     <PackageReference Include="Microsoft.ApplicationInsights.Agent.Intercept" Version="2.4.0" />
