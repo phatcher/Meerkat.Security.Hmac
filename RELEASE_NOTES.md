@@ -1,3 +1,6 @@
+### 3.1.2 (2019-03-10)
+* Introduce SourceLink, update dependencies
+
 ### 3.1.1 (2018-09-03)
 * Tidy up package dependencies
 
@@ -18,11 +21,11 @@
 * Introduce and prefer middleware using IDependencyResolver
 * Introduced CachingSecretRepositorying using Meerkat.Caching
 
-#### 3.0.0 (2017-02-04)
+### 3.0.0 (2017-02-04)
 * Breaking change - changing namespaces to make it easier to filter on logging
 * Change from Common.Logging to Meerkat.Logging, unifies logging framework across libraries.
  
-#### 2.1.1 (2016-12-10)
+### 2.1.1 (2016-12-10)
 * Fix DateTime.Kind problem by changing header date setting to DateTimeOffset.UtcNow.
 
 #### 2.1 (2016-11-19)

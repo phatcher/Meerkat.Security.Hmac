@@ -10,11 +10,11 @@ namespace Meerkat.Hmac.Test
         [OneTimeSetUp]
         public void Initialize()
         {
-            log4net.Config.XmlConfigurator.Configure();
-            if (LogManager.GetRepository().Configured)
-            {
-                Debug.WriteLine("configured");
-            }
+            //log4net.Config.XmlConfigurator.Configure();
+            //if (LogManager.GetRepository().Configured)
+            //{
+            //    Debug.WriteLine("configured");
+            //}
         }
     }
 }

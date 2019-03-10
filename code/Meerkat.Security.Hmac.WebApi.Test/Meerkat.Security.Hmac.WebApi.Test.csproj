@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net472;netcoreapp2.2</TargetFrameworks>
+    <TargetFrameworks>net472</TargetFrameworks>
     <RootNamespace>Meerkat.Hmac.Test</RootNamespace>
 	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	<OutputPath>$(SolutionDir)/build/$(Configuration)/$(AssemblyName)/$(TargetFramework)/</OutputPath>
@@ -20,6 +20,8 @@
     <Compile Include="..\SolutionInfo.cs" Link="Properties\SolutionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Meerkat.Security.Hmac.WebApi\Meerkat.Security.Hmac.WebApi.csproj" />
     <ProjectReference Include="..\Meerkat.Security.Hmac\Meerkat.Security.Hmac.csproj" />
+    <ProjectReference Include="..\Sample.Web\Sample.Web.csproj" />
   </ItemGroup>
 </Project>

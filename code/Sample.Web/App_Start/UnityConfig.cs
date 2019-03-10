@@ -1,12 +1,10 @@
 using System;
 
 using Meerkat.Caching;
-using Meerkat.Security;
 using Meerkat.Security.Authentication;
 using Meerkat.Security.Authentication.Hmac;
 using Meerkat.Security.Authorization;
 
-using Sample.Web.Services;
 using Unity;
 using Unity.Injection;
 using Unity.Lifetime;
@@ -19,10 +17,7 @@ namespace Sample.Web
     public class UnityConfig
     {
         private static object syslock = new object();
-        private static Lazy<IUnityContainer> container = new Lazy<IUnityContainer>(() =>
-        {
-            return ConfigureContainer();
-        });
+        private static Lazy<IUnityContainer> container = new Lazy<IUnityContainer>(ConfigureContainer);
 
         private static IUnityContainer c;
         
@@ -85,8 +80,10 @@ namespace Sample.Web
         {
             RegisterHmacCore(container);
 
-            container.RegisterType<ICache>(
-                new InjectionFactory(x => MemoryObjectCacheFactory.Default()));
+            container.RegisterFactory<ICache>(x => MemoryObjectCacheFactory.Default());
+
+            //container.RegisterType<ICache>(
+            //    new InjectionFactory(x => MemoryObjectCacheFactory.Default()));
 
             container.RegisterType<ISignatureValidator, HmacSignatureValidator>(
                 new InjectionConstructor(
@@ -116,7 +113,7 @@ namespace Sample.Web
         private static IUnityContainer ConfigureContainer()
         {
             var container = new UnityContainer();
-            new MyUnityServiceLocator(container);
+            //new MyUnityServiceLocator(container);
 
             RegisterTypes(container);
             return container;
