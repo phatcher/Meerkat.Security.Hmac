@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net451;net462;net471;net472;netstandard20</TargetFrameworks>
+    <TargetFrameworks>net452;net462;net471;net472;netstandard20</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>Meerkat</RootNamespace>
     <Description>An implementation of HMAC for ASP.NET</Description>
@@ -24,6 +25,15 @@
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.6" />
     <PackageReference Include="System.Net.Http" Version="4.3.3" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="2.1.1" Condition="'$(TargetFramework)' == 'netstandard20'" />
+    <PackageReference Include="Meerkat.Caching" Version="2.1.3" />
+    <PackageReference Include="Meerkat.Logging" Version="2.2.1" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-18618-05" PrivateAssets="All" />
+    <PackageReference Include="System.Net.Http" Version="4.3.3" Condition="'$(TargetFramework)' == 'netstandard20'" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="2.1.1" Condition="'$(TargetFramework)' == 'netstandard20'" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Net.Http" Condition="'$(TargetFramework)' != 'netstandard20'" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;DEBUG</DefineConstants>
@@ -36,7 +46,7 @@
     <Compile Include="..\SolutionInfo.cs" Link="Properties\SolutionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-      <Reference Include="System.Configuration" Condition="'$(TargetFramework)' != 'netstandard20'" />
-      <Reference Include="System.Runtime.Caching" Condition="'$(TargetFramework)' != 'netstandard20'" />
+    <Reference Include="System.Configuration" Condition="'$(TargetFramework)' != 'netstandard20'" />
+    <Reference Include="System.Runtime.Caching" Condition="'$(TargetFramework)' != 'netstandard20'" />
   </ItemGroup>
 </Project>

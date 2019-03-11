@@ -1,18 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFrameworks>net472</TargetFrameworks>
     <RootNamespace>Meerkat.Hmac.Test</RootNamespace>
 	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	<OutputPath>$(SolutionDir)/build/$(Configuration)/$(AssemblyName)/$(TargetFramework)/</OutputPath>
-	<OutDir>$(OutputPath)</OutDir>      
+	<OutDir>$(OutputPath)</OutDir>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.1.2" />
-    <PackageReference Include="Moq" Version="4.9.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.2.0" />
     <PackageReference Include="Moq" Version="4.10.1" />
     <PackageReference Include="Microsoft.Net.Test.Sdk" Version="15.8.0" />
+    <PackageReference Include="Microsoft.Owin.Testing" Version="4.0.1" />
     <PackageReference Include="NCheck" Version="3.0.0" />
     <PackageReference Include="NUnit" Version="3.11.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
@@ -22,7 +20,8 @@
     <Compile Include="..\SolutionInfo.cs" Link="Properties\SolutionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Meerkat.Security.Hmac.AspNetCore\Meerkat.Security.Hmac.AspNetCore.csproj" />
-    <ProjectReference Include="..\Sample.AspNetCore\Sample.AspNetCore.csproj" />
+    <ProjectReference Include="..\Meerkat.Security.Hmac.WebApi\Meerkat.Security.Hmac.WebApi.csproj" />
+    <ProjectReference Include="..\Meerkat.Security.Hmac\Meerkat.Security.Hmac.csproj" />
+    <ProjectReference Include="..\Sample.Web\Sample.Web.csproj" />
   </ItemGroup>
 </Project>

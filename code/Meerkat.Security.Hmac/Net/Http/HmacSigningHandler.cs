@@ -13,7 +13,7 @@ using Meerkat.Security.Authentication.Hmac;
 namespace Meerkat.Net.Http
 {
     /// <summary>
-    /// Handler reponsible for HMAC signing a message if we have a <see cref="HmacAuthentication.ClientIdHeader"/>
+    /// Handler responsible for HMAC signing a message if we have a <see cref="HmacAuthentication.ClientIdHeader"/>
     /// </summary>
     public class HmacSigningHandler : DelegatingHandler
     {

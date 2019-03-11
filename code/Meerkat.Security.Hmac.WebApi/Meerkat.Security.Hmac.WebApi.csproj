@@ -23,6 +23,11 @@
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.6" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Owin" Version="5.2.6" />
     <PackageReference Include="Microsoft.Owin.Security" Version="4.0.0" />
+    <PackageReference Include="Meerkat.Logging" Version="2.2.1" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Owin" Version="5.2.7" />
+    <PackageReference Include="Microsoft.Owin.Security" Version="4.0.1" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-18618-05" PrivateAssets="All"/>
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;DEBUG</DefineConstants>
@@ -38,6 +43,6 @@
     <ProjectReference Include="..\Meerkat.Security.Hmac\Meerkat.Security.Hmac.csproj" />
   </ItemGroup>
   <ItemGroup>
-      <Reference Include="System.Configuration" Condition="'$(TargetFramework)' != 'netstandard2.0'" />
+    <Reference Include="System.Configuration" Condition="'$(TargetFramework)' != 'netstandard2.0'" />
   </ItemGroup>
 </Project>

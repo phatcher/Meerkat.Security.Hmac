@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+
 using Meerkat.Security.Authorization;
 
 namespace Meerkat.Security.Authentication.Hmac
@@ -32,7 +33,7 @@ namespace Meerkat.Security.Authentication.Hmac
         }
 
         /// <copydoc cref="IHmacAuthenticator.Authenticate" />
-        /// <remarks>Enrichs the authenticated principal with claims provided by the <see cref="IRequestClaimsProvider"/></remarks>
+        /// <remarks>Enriches the authenticated principal with claims provided by the <see cref="IRequestClaimsProvider"/></remarks>
         public async Task<ClaimsIdentity> Authenticate(HttpRequestMessage request)
         {
             var authenticated = await validator.IsValid(request);
