@@ -1,11 +1,18 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Meerkat.Security.Authentication.Hmac;
+
+using Microsoft.AspNetCore.Authentication;
 
 namespace Meerkat.Security.Authentication
 {
     public class HmacAuthenticationOptions : AuthenticationSchemeOptions
     {
-        public const string DefaultScheme = "MSEC-HMAC-SHA256";
+        public const string DefaultScheme = HmacAuthentication.AuthenticationScheme;
 
-        public string Scheme => DefaultScheme;
+        public HmacAuthenticationOptions()
+        {
+            Scheme = DefaultScheme;
+        }
+
+        public string Scheme { get; set; }
     }
 }

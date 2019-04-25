@@ -1,5 +1,4 @@
-﻿
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
@@ -36,8 +35,11 @@ namespace Meerkat.Hmac.Test.Security.Authentication
             // Act
             var result = await handler.AuthenticateAsync();
 
-            Assert.That(result.Succeeded, Is.False, "Succeeded differs");
-            Assert.That(result.Failure, Is.Null, "Failure differs");
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Succeeded, Is.False, "Succeeded differs");
+                Assert.That(result.Failure, Is.Null, "Failure differs");
+            });
         }
 
         [Test]
@@ -52,8 +54,11 @@ namespace Meerkat.Hmac.Test.Security.Authentication
             // Act
             var result = await handler.AuthenticateAsync();
 
-            Assert.That(result.Succeeded, Is.False, "Succeeded differs");
-            Assert.That(result.Failure, Is.Null, "Failure differs");
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Succeeded, Is.False, "Succeeded differs");
+                Assert.That(result.Failure, Is.Null, "Failure differs");
+            });
         }
 
         [Test]
@@ -68,14 +73,42 @@ namespace Meerkat.Hmac.Test.Security.Authentication
             // Act
             var result = await handler.AuthenticateAsync();
 
-            Assert.That(result.Succeeded, Is.False, "Succeeded differs");
-            Assert.That(result.Failure, Is.Not.Null, "Failure differs");
-            Assert.That(result.Failure.Message, Is.EqualTo("Missing credentials"));
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Succeeded, Is.False, "Succeeded differs");
+                Assert.That(result.Failure, Is.Not.Null, "Failure differs");
+                Assert.That(result.Failure.Message, Is.EqualTo("Missing credentials"));
+            });
         }
 
         [Test]
-        [Ignore("Need to work on the test expectations")]
         public async Task InvalidSignature()
+        {
+            // Arrange
+            var context = new DefaultHttpContext();
+            context.Request.Headers["Authorization"] = HmacAuthentication.AuthenticationScheme + " Foo";
+            var request = new DefaultHttpRequest(context)
+            {
+                Method = "GET"
+            };
+
+            authenticator.Setup(x => x.Authenticate(It.IsAny<System.Net.Http.HttpRequestMessage>())).ReturnsAsync((ClaimsIdentity) null);
+
+            await InitializeHandler(context);
+
+            // Act
+            var result = await handler.AuthenticateAsync();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Succeeded, Is.False, "Succeeded differs");
+                Assert.That(result.Failure, Is.Not.Null, "Failure differs");
+                Assert.That(result.Failure.Message, Is.EqualTo("Invalid signature"));
+            });
+        }
+
+        [Test]
+        public async Task ValidSignature()
         {
             // Arrange
             var context = new DefaultHttpContext();
@@ -92,9 +125,12 @@ namespace Meerkat.Hmac.Test.Security.Authentication
             // Act
             var result = await handler.AuthenticateAsync();
 
-            Assert.That(result.Succeeded, Is.False, "Succeeded differs");
-            Assert.That(result.Failure, Is.Not.Null, "Failure differs");
-            Assert.That(result.Failure.Message, Is.EqualTo("Invalid signature"));
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Succeeded, Is.True, "Succeeded differs");
+                //Assert.That(result.Failure, Is.Not.Null, "Failure differs");
+                //Assert.That(result.Failure.Message, Is.EqualTo("Invalid signature"));
+            });
         }
 
         private async Task InitializeHandler(HttpContext context)

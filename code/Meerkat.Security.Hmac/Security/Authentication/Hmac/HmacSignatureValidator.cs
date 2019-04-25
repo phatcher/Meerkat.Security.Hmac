@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 
-using Meerkat.Caching;
 using Meerkat.Logging;
 using Meerkat.Net.Http;
 
@@ -17,12 +16,10 @@ namespace Meerkat.Security.Authentication.Hmac
     {
         private static readonly ILog Logger = LogProvider.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private const string CacheRegion = "hmac";
-
         private readonly ISignatureCalculator signatureCalculator;
         private readonly IMessageRepresentationBuilder representationBuilder;
         private readonly ISecretRepository secretRepository;
-        private readonly ICache objectCache;
+        private readonly ISignatureCache cache;
 
         /// <summary>
         /// Creates a new instance of the <see cref="HmacSignatureValidator"/> class.
@@ -30,20 +27,20 @@ namespace Meerkat.Security.Authentication.Hmac
         /// <param name="signatureCalculator"></param>
         /// <param name="representationBuilder"></param>
         /// <param name="secretRepository"></param>
-        /// <param name="objectCache"></param>
+        /// <param name="cache"></param>
         /// <param name="validityPeriod"></param>
         /// <param name="clockDrift"></param>
         public HmacSignatureValidator(ISignatureCalculator signatureCalculator, 
             IMessageRepresentationBuilder representationBuilder,
             ISecretRepository secretRepository,
-            ICache objectCache,
+            ISignatureCache cache,
             int validityPeriod,            
             int clockDrift)
         {
             this.secretRepository = secretRepository;
             this.representationBuilder = representationBuilder;
             this.signatureCalculator = signatureCalculator;
-            this.objectCache = objectCache;
+            this.cache = cache;
             ValidityPeriod = validityPeriod;
             ClockDrift = clockDrift;
         }
@@ -68,8 +65,14 @@ namespace Meerkat.Security.Authentication.Hmac
         /// </remarks>
         public async Task<bool> IsValid(HttpRequestMessage request)
         {
-            // TODO: Generalize so we can using any HMAC scheme.
-            if (request.Headers.Authorization == null || request.Headers.Authorization.Scheme != HmacAuthentication.AuthenticationScheme)
+            if (request.Headers.Authorization == null)
+            {
+                // No authorization or not our authorization schema, so no 
+                Logger.InfoFormat("No authorization: {0}", request.RequestUri);
+                return false;
+            }
+
+            if (!request.Headers.Authorization.Scheme.StartsWith(HmacAuthentication.AuthenticationSchemePrefix))
             {
                 // No authorization or not our authorization schema, so no 
                 Logger.InfoFormat("Not our authorization schema: {0}", request.RequestUri);
@@ -100,7 +103,8 @@ namespace Meerkat.Security.Authentication.Hmac
                 return false;
             }
 
-            if (!await request.Content.IsMd5Valid())
+            var contentValid = await request.Content.IsMd5Valid().ConfigureAwait(false);
+            if (!contentValid)
             {
                 // MD5 is invalid, so no
                 Logger.InfoFormat("Invalid MD5 hash: {0}", request.RequestUri);
@@ -117,11 +121,11 @@ namespace Meerkat.Security.Authentication.Hmac
             }
 
             // Compute the signature
-            // TODO: Pass the encryption algorithm used e.g. SHA256
-            var signature = signatureCalculator.Signature(secret, representation);
+            var scheme = request.Headers.Authorization.Scheme.Substring(HmacAuthentication.AuthenticationSchemePrefix.Length);
+            var signature = signatureCalculator.Signature(secret, representation, scheme);
 
             // Have we seen it before
-            if (objectCache.Contains(signature))
+            if (cache.Contains(signature))
             {
                 // Already seen, so no to avoid replay attack
                 Logger.WarnFormat("Request replayed {0}: {1}", signature, request.RequestUri);
@@ -138,7 +142,7 @@ namespace Meerkat.Security.Authentication.Hmac
             else 
             {
                 // Store valid signatures to avoid replay attack
-                objectCache.Set(signature, userName, DateTimeOffset.UtcNow.AddMinutes(ValidityPeriod), CacheRegion);
+                cache.Add(signature, DateTimeOffset.UtcNow.AddMinutes(ValidityPeriod));
             }
 
             // Return the signature validation.

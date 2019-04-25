@@ -22,6 +22,7 @@ namespace Meerkat.Net.Http
         private readonly ISecretRepository secretRepository;
         private readonly IMessageRepresentationBuilder representationBuilder;
         private readonly ISignatureCalculator signatureCalculator;
+        private readonly string scheme;
 
         /// <summary>
         /// Create a new instance of the <see cref="HmacSigningHandler"/> class.
@@ -29,11 +30,13 @@ namespace Meerkat.Net.Http
         /// <param name="secretRepository"></param>
         /// <param name="representationBuilder"></param>
         /// <param name="signatureCalculator"></param>
-        public HmacSigningHandler(ISecretRepository secretRepository, IMessageRepresentationBuilder representationBuilder, ISignatureCalculator signatureCalculator)
+        /// <param name="scheme"></param>
+        public HmacSigningHandler(ISecretRepository secretRepository, IMessageRepresentationBuilder representationBuilder, ISignatureCalculator signatureCalculator, string scheme = "SHA256")
         {
             this.secretRepository = secretRepository;
             this.representationBuilder = representationBuilder;
             this.signatureCalculator = signatureCalculator;
+            this.scheme = scheme;
         }
 
         /// <summary>
@@ -51,14 +54,7 @@ namespace Meerkat.Net.Http
                 return base.SendAsync(request, cancellationToken);
             }
 
-            // Need the date present in UTC for the signature calculation
-            request.Headers.Date = DateTimeOffset.UtcNow;
-
-            // Get the canonical representation.
-            var representation = representationBuilder.BuildRequestRepresentation(request);
-
-            // Now try and sign it
-            Logger.InfoFormat("HMAC signing for client id {0}: {1}", clientId, request.RequestUri);
+            // Can we sign it
             var secret = secretRepository.ClientSecret(clientId);
             if (secret == null)
             {
@@ -66,12 +62,26 @@ namespace Meerkat.Net.Http
             }
             else
             {
-                var signature = signatureCalculator.Signature(secret, representation);
+                // Need the date present in UTC for the signature calculation
+                request.Headers.Date = DateTimeOffset.UtcNow;
 
-                // Ok, valid signature so add the authentication header
-                var header = new AuthenticationHeaderValue(HmacAuthentication.AuthenticationScheme, signature);
+                // Get the canonical representation.
+                var representation = representationBuilder.BuildRequestRepresentation(request);
 
-                request.Headers.Authorization = header;
+                // Compute the signature
+                var signature = signatureCalculator.Signature(secret, representation, scheme);
+
+                if (string.IsNullOrEmpty(signature))
+                {
+                    Logger.WarnFormat("Invalid signature for client id {0}: {1}", clientId, request.RequestUri);
+                }
+                else
+                {
+                    // Valid signature so add the authentication header
+                    Logger.InfoFormat("HMAC signed for client id {0}: {1}", clientId, request.RequestUri);
+                    var header = new AuthenticationHeaderValue(HmacAuthentication.AuthenticationSchemePrefix + scheme, signature);
+                    request.Headers.Authorization = header;
+                }
             }
 
             return base.SendAsync(request, cancellationToken);

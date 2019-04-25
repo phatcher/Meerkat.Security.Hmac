@@ -1,6 +1,8 @@
 ﻿using System.Net.Http;
+
 using Meerkat.Net.Http;
 using Meerkat.Security.Authentication.Hmac;
+
 using NUnit.Framework;
 
 namespace Meerkat.Hmac.Test.Net.Http

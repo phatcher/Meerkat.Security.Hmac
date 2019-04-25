@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Net.Http;
+
 using Meerkat.Net.Http;
+
 using NUnit.Framework;
 
 namespace Meerkat.Hmac.Test.Net.Http
@@ -62,10 +64,13 @@ namespace Meerkat.Hmac.Test.Net.Http
 
             var candidate = message.Headers.GetValues<string>("test").ToList();
 
-            Assert.That(candidate.Count, Is.EqualTo(3));
-            Assert.That(candidate[0], Is.EqualTo("A"));
-            Assert.That(candidate[1], Is.EqualTo("B"));
-            Assert.That(candidate[2], Is.EqualTo("C"));
+            Assert.Multiple(() =>
+            {
+                Assert.That(candidate.Count, Is.EqualTo(3));
+                Assert.That(candidate[0], Is.EqualTo("A"));
+                Assert.That(candidate[1], Is.EqualTo("B"));
+                Assert.That(candidate[2], Is.EqualTo("C"));
+            });
         }
 
         [Test]

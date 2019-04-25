@@ -11,15 +11,15 @@ namespace Meerkat.Security.Authorization
     /// <summary>
     /// Basic request claims provider that converts the <see cref="P:HmacAuthentication.ClientIdHeader"/> header into a claim.
     /// </summary>
-    public class RequestClaimsProvider : IRequestClaimsProvider
+    public class ClientIdRequestClaimsProvider : IRequestClaimsProvider
     {
         private readonly string nameClaimType;
 
         /// <summary>
-        /// Creates a new instance of the <see cref="RequestClaimsProvider"/> class.
+        /// Creates a new instance of the <see cref="ClientIdRequestClaimsProvider"/> class.
         /// </summary>
         /// <param name="nameClaimType"></param>
-        public RequestClaimsProvider(string nameClaimType)
+        public ClientIdRequestClaimsProvider(string nameClaimType)
         {
             this.nameClaimType = nameClaimType;
         }

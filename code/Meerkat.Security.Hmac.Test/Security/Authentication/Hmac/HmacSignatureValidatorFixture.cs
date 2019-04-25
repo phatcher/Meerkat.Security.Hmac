@@ -2,11 +2,13 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using Meerkat.Caching;
+
 using Meerkat.Net.Http;
 using Meerkat.Security.Authentication;
 using Meerkat.Security.Authentication.Hmac;
+
 using Moq;
+
 using NUnit.Framework;
 
 namespace Meerkat.Hmac.Test.Security.Authentication.Hmac
@@ -17,7 +19,7 @@ namespace Meerkat.Hmac.Test.Security.Authentication.Hmac
         private Mock<ISignatureCalculator> signatureCalculator;
         private Mock<IMessageRepresentationBuilder> representationBuilder;
         private Mock<ISecretRepository> secretRepository;
-        private Mock<ICache> cache;
+        private Mock<ISignatureCache> cache;
         private HmacSignatureValidator validator;
 
         [Test]
@@ -123,11 +125,13 @@ namespace Meerkat.Hmac.Test.Security.Authentication.Hmac
             Assert.That(candidate, Is.EqualTo(false));
         }
 
-        [Test]
-        public async Task ValidSignature()
+        [TestCase("SHA256")]
+        [TestCase("SHA384")]
+        [TestCase("SHA512")]
+        public async Task ValidSignature(string scheme)
         {
             var request = new HttpRequestMessage();
-            request.Headers.Authorization = new AuthenticationHeaderValue(HmacAuthentication.AuthenticationScheme, "PQRS");
+            request.Headers.Authorization = new AuthenticationHeaderValue(HmacAuthentication.AuthenticationSchemePrefix + scheme, "PQRS");
             request.Headers.Date = new DateTimeOffset(DateTime.UtcNow);
             request.Headers.Add(HmacAuthentication.ClientIdHeader, "test");
 
@@ -137,11 +141,11 @@ namespace Meerkat.Hmac.Test.Security.Authentication.Hmac
             secretRepository.Setup(x => x.ClientSecret("test")).Returns("1234");
 
             representationBuilder.Setup(x => x.BuildRequestRepresentation(request)).Returns("ABCD");
-            signatureCalculator.Setup(x => x.Signature(It.IsAny<string>(), It.IsAny<string>())).Returns("PQRS");
+            signatureCalculator.Setup(x => x.Signature(It.IsAny<string>(), It.IsAny<string>(), scheme)).Returns("PQRS");
 
             var candidate = await validator.IsValid(request);
 
-            cache.Setup(x => x.Set(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<DateTimeOffset>(), "hmac"));
+            cache.Setup(x => x.Add(It.IsAny<string>(), It.IsAny<DateTimeOffset>()));
 
             Assert.That(candidate, Is.EqualTo(true));
         }
@@ -160,7 +164,7 @@ namespace Meerkat.Hmac.Test.Security.Authentication.Hmac
             secretRepository.Setup(x => x.ClientSecret("test")).Returns("1234");
 
             representationBuilder.Setup(x => x.BuildRequestRepresentation(request)).Returns("ABCD");
-            signatureCalculator.Setup(x => x.Signature(It.IsAny<string>(), It.IsAny<string>())).Returns("WXYZ");
+            signatureCalculator.Setup(x => x.Signature(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns("WXYZ");
 
             var candidate = await validator.IsValid(request);
 
@@ -181,8 +185,8 @@ namespace Meerkat.Hmac.Test.Security.Authentication.Hmac
             secretRepository.Setup(x => x.ClientSecret("test")).Returns("1234");
 
             representationBuilder.Setup(x => x.BuildRequestRepresentation(request)).Returns("ABCD");
-            signatureCalculator.Setup(x => x.Signature(It.IsAny<string>(), It.IsAny<string>())).Returns("PQRS");
-            cache.Setup(x => x.Contains(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+            signatureCalculator.Setup(x => x.Signature(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns("PQRS");
+            cache.Setup(x => x.Contains(It.IsAny<string>())).Returns(true);
 
             var candidate = await validator.IsValid(request);
 
@@ -195,7 +199,7 @@ namespace Meerkat.Hmac.Test.Security.Authentication.Hmac
             signatureCalculator = new Mock<ISignatureCalculator>();
             representationBuilder = new Mock<IMessageRepresentationBuilder>();
             secretRepository = new Mock<ISecretRepository>();
-            cache = new Mock<ICache>();
+            cache = new Mock<ISignatureCache>();
 
             validator = new HmacSignatureValidator(signatureCalculator.Object, representationBuilder.Object, secretRepository.Object, cache.Object, 5, 5);
         }

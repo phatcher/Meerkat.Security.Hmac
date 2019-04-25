@@ -16,6 +16,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D14DFB16-6DAF-4AE8-8166-ACF3D0ADAF3E}"
 	ProjectSection(SolutionItems) = preProject
 		build.fsx = build.fsx
+		nuget\Meerkat.Security.Hmac.AspNetCore.nuspec = nuget\Meerkat.Security.Hmac.AspNetCore.nuspec
 		nuget\Meerkat.Security.Hmac.nuspec = nuget\Meerkat.Security.Hmac.nuspec
 		nuget\Meerkat.Security.Hmac.WebApi.nuspec = nuget\Meerkat.Security.Hmac.WebApi.nuspec
 		README.md = README.md
@@ -28,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meerkat.Security.Hmac.AspNe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.AspNetCore", "code\Sample.AspNetCore\Sample.AspNetCore.csproj", "{7A74AD55-53CD-44AE-8A6F-43165ADCE293}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meerkat.Security.Hmac.WebApi.Test", "Code\Meerkat.Security.Hmac.WebApi.Test\Meerkat.Security.Hmac.WebApi.Test.csproj", "{12DA4D4F-E47B-45CA-B6F9-08BBB99751E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meerkat.Security.Hmac.WebApi.Test", "Code\Meerkat.Security.Hmac.WebApi.Test\Meerkat.Security.Hmac.WebApi.Test.csproj", "{12DA4D4F-E47B-45CA-B6F9-08BBB99751E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -52,14 +52,6 @@ namespace Sample.Web
             }
         }
 
-        /// <summary>
-        /// Get the service locator from the container
-        /// </summary>
-        //public static IServiceLocator ServiceLocator
-        //{
-        //    get { return GetConfiguredContainer().Resolve<IServiceLocator>(); }
-        //}
-
         public static void RegisterHmacCore(IUnityContainer container)
         {
             // Secret store as singleton
@@ -80,9 +72,9 @@ namespace Sample.Web
         {
             RegisterHmacCore(container);
 
-            //container.RegisterType<ICache>(
-            //    new InjectionFactory(x => MemoryObjectCacheFactory.Default()));
-
+            container.RegisterFactory<ICache>(x => MemoryObjectCacheFactory.Default());
+            container.RegisterSingleton<ISignatureCache, SignatureCache>();
+                
             //container.RegisterType<ICache>(
             //    new InjectionFactory(x => MemoryObjectCacheFactory.Default()));
 
@@ -91,13 +83,13 @@ namespace Sample.Web
                     new ResolvedParameter<ISignatureCalculator>(),
                     new ResolvedParameter<IMessageRepresentationBuilder>(),
                     new ResolvedParameter<ISecretRepository>(),
-                    new ResolvedParameter<ICache>(),
+                    new ResolvedParameter<ISignatureCache>(),
                     // Clock drift in minutes
                     new InjectionParameter<int>(10),
                     // Cache duration in minutes
                     new InjectionParameter<int>(10)));
 
-            container.RegisterType<IRequestClaimsProvider, RequestClaimsProvider>(
+            container.RegisterType<IRequestClaimsProvider, ClientIdRequestClaimsProvider>(
                 new InjectionConstructor(
                    // Names of the user name claim type
                    new InjectionParameter("name")));

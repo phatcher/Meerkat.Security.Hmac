@@ -1,6 +1,6 @@
-﻿using Meerkat.Caching;
-using Meerkat.Security.Authentication;
+﻿using Meerkat.Security.Authentication;
 using Meerkat.Security.Authentication.Hmac;
+using Meerkat.Security.Authorization;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -23,13 +23,10 @@ namespace Sample.AspNetCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddSingleton<ICache>(x => MemoryObjectCacheFactory.Default());
-            services.AddHmacAuthenticator();
-
             services.AddAuthentication(sharedOptions =>
             {
-                sharedOptions.DefaultScheme = "smart";
-                sharedOptions.DefaultChallengeScheme = "smart";
+                sharedOptions.DefaultScheme = HmacAuthentication.AuthenticationScheme;
+                sharedOptions.DefaultChallengeScheme = HmacAuthentication.AuthenticationScheme;
             })
             .AddPolicyScheme("smart", "JWT or HMAC", options =>
             {
@@ -46,24 +43,36 @@ namespace Sample.AspNetCore
             })
             .AddJwtBearer(options =>
             {
-                options.Authority = $"https://login.microsoftonline.com/tfp/{Configuration["AzureAdB2C:Tenant"]}/{Configuration["AzureAdB2C:Policy"]}/v2.0/";
-                options.Audience = Configuration["AzureAdB2C:ClientId"];
+                options.Authority = "https://foo.com/";
+                options.Audience = "aud";
             })
             .AddHmacAuthentication(options =>
             {
             });
 
+            services.AddHmacAuthenticator();
+
+            services.AddDistributedMemoryCache();
+            services.AddSingleton<ISignatureCache, DistributedSignatureCache>();
+
+            var secretRepository = new SecretStore();
+            secretRepository.Assign("1234", "ABCD");
+            services.AddSingleton<ISecretRepository>(secretRepository);
+            services.AddTransient<IRequestClaimsProvider>(x => new ClientIdRequestClaimsProvider("name"));
+            
             services.AddMvc()
-                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
+
+            app.UseAuthentication();
 
             app.UseMvc();
         }

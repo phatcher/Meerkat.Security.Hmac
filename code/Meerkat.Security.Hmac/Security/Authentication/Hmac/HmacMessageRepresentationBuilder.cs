@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+
 using Meerkat.Net.Http;
 
 namespace Meerkat.Security.Authentication.Hmac
 {
     /// <summary>
-    /// Builds a canonical representation of the request messsage.
+    /// Builds a canonical representation of the request message.
     /// <para>
     /// Builds message representation as follows:
     /// HTTPMethod\n +
@@ -25,7 +26,7 @@ namespace Meerkat.Security.Authentication.Hmac
         /// </summary>
         public HmacMessageRepresentationBuilder()
         {
-            // Additional headers neeed by HMAC
+            // Additional headers needed by HMAC
             Headers.AddRange(new List<Func<HttpRequestMessage, string>>
             {
                 m => m.Headers.GetValues<string>(HmacAuthentication.ClientIdHeader).FirstOrDefault(),

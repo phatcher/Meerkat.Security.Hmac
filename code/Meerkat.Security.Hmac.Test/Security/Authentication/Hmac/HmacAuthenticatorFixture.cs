@@ -27,7 +27,7 @@ namespace Meerkat.Hmac.Test.Security.Authentication.Hmac
         {
             // Arrange
             var validator = new Mock<ISignatureValidator>();
-            var provider = new RequestClaimsProvider("name");
+            var provider = new ClientIdRequestClaimsProvider("name");
 
             var authenticator = new HmacAuthenticator(validator.Object, provider, "name", "role");
 
@@ -51,7 +51,7 @@ namespace Meerkat.Hmac.Test.Security.Authentication.Hmac
         {
             // Arrange
             var validator = new Mock<ISignatureValidator>();
-            var provider = new RequestClaimsProvider("name");
+            var provider = new ClientIdRequestClaimsProvider("name");
 
             var authenticator = new HmacAuthenticator(validator.Object, provider, "name", "role");
 

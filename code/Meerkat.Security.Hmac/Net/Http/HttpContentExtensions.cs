@@ -38,7 +38,7 @@ namespace Meerkat.Net.Http
             var hashHeader = content.Headers.ContentMD5;
             if (hashHeader == null)
             {
-                // TOOD: Should we always require one if we have non-null content?
+                // TODO: Should we always require one if we have non-null content?
                 // No MD5 hash so true
                 return true;
             }
@@ -65,10 +65,10 @@ namespace Meerkat.Net.Http
         /// </summary>
         /// <param name="httpContent"></param>
         /// <returns></returns>
-        public static async Task<byte[]> ComputeMd5Hash(this HttpContent httpContent)
+        public static Task<byte[]> ComputeMd5Hash(this HttpContent httpContent)
         {
             // NB Using HashStream here causes some tests to fail
-            return await httpContent.ComputeMd5HashByte().ConfigureAwait(false);
+            return httpContent.ComputeMd5HashByte();
         }
 
         /// <summary>

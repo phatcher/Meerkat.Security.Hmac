@@ -10,7 +10,8 @@
         /// </summary>
         /// <param name="secret">Secret to use</param>
         /// <param name="value">Value to use</param>
+        /// <param name="scheme">Scheme to use</param>
         /// <returns>Computed signature from the value and the secret</returns>
-        string Signature(string secret, string value);
+        string Signature(string secret, string value, string scheme = "SHA256");
     }
 }

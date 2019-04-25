@@ -31,7 +31,7 @@ namespace Meerkat.Security.Authentication
                 return AuthenticateResult.NoResult();
             }
 
-            if (authorization.Scheme != HmacAuthentication.AuthenticationScheme)
+            if (authorization.Scheme != Options.Scheme)
             {
                 Logger.LogDebug("Not HMAC authenticated");
                 // Not our scheme, so ignore
@@ -54,6 +54,7 @@ namespace Meerkat.Security.Authentication
                 return AuthenticateResult.Fail("Invalid signature");
             }
 
+            // Ok, wrap the identity in a principal and say we're ok.
             var principal = new ClaimsPrincipal(identity);
 
             var ticket = new AuthenticationTicket(principal, Options.Scheme);

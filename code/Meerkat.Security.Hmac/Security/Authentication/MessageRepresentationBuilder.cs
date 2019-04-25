@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+
 using Meerkat.Logging;
 using Meerkat.Net.Http;
 
 namespace Meerkat.Security.Authentication
 {
     /// <summary>
-    /// Builds a canonical representation of the request messsage.
+    /// Builds a canonical representation of the request message.
     /// </summary>
     public class MessageRepresentationBuilder : IMessageRepresentationBuilder
     {

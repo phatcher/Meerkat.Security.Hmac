@@ -15,7 +15,7 @@ namespace Meerkat.Security.Authentication.Hmac
         private readonly ISignatureValidator validator;
         private readonly IRequestClaimsProvider claimsProvider;
         private readonly string nameClaimType;
-        private readonly string roleNameType;
+        private readonly string roleClaimType;
 
         /// <summary>
         /// Creates a new instance of the <see cref="HmacAuthenticator"/> class.
@@ -23,13 +23,13 @@ namespace Meerkat.Security.Authentication.Hmac
         /// <param name="validator">Validator to use</param>
         /// <param name="claimsProvider">Claims provider to process the request</param>
         /// <param name="nameClaimType">Name of the name claim type</param>
-        /// <param name="roleNameType">Name of the role claim type</param>
-        public HmacAuthenticator(ISignatureValidator validator, IRequestClaimsProvider claimsProvider, string nameClaimType, string roleNameType)
+        /// <param name="roleClaimType">Name of the role claim type</param>
+        public HmacAuthenticator(ISignatureValidator validator, IRequestClaimsProvider claimsProvider, string nameClaimType, string roleClaimType)
         {
             this.validator = validator;
             this.claimsProvider = claimsProvider;
             this.nameClaimType = nameClaimType;
-            this.roleNameType = roleNameType;
+            this.roleClaimType = roleClaimType;
         }
 
         /// <copydoc cref="IHmacAuthenticator.Authenticate" />
@@ -46,7 +46,7 @@ namespace Meerkat.Security.Authentication.Hmac
             // Get all the claims we can derive from the request e.g. the HmacAuthentication.ClientIdHeader
             var claims = new List<Claim>(claimsProvider.Claims(request));
 
-            var identity = new ClaimsIdentity(claims, HmacAuthentication.AuthenticationScheme, nameClaimType, roleNameType);
+            var identity = new ClaimsIdentity(claims, HmacAuthentication.AuthenticationScheme, nameClaimType, roleClaimType);
 
             return identity;
         }

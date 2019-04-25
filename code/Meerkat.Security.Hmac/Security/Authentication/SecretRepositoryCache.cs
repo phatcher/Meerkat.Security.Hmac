@@ -1,35 +1,40 @@
-﻿#if !NETSTANDARD
+﻿#if NETSTANDARD
 using System;
+using System.Threading.Tasks;
 
-using Meerkat.Caching;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Meerkat.Security.Authentication
 {
     /// <summary>
-    /// Caching layer over a <see cref="ISecretRepository"/> using <see cref="ICache"/>
+    /// Caching layer over a <see cref="ISecretRepository"/> using <see cref="IDistributedCache"/>
     /// <para>
     /// Useful for avoiding a database call on every secret retrieve.
     /// </para>
     /// </summary>
-    public class CachingSecretRepository : ISecretRepository
+    public class SecretRepositoryCache : ISecretRepository
     {
-        private const string Region = "clientsecret";
+        private const string CacheRegion = "clientsecret";
 
         private readonly ISecretRepository repository;
-        private readonly ICache cache;
+        private readonly IDistributedCache cache;
         private readonly TimeSpan duration;
+        //private readonly IDataProtector protector;
 
         /// <summary>
-        /// Creates a new instance of the <see cref="CachingSecretRepository"/> class.
+        /// Creates a new instance of the <see cref="SecretRepositoryCache"/> class.
         /// </summary>
         /// <param name="repository">Underlying repository with the secrets</param>
         /// <param name="cache">Cache to use</param>
         /// <param name="duration">Duration to cache after acquisition</param>
-        public CachingSecretRepository(ISecretRepository repository, ICache cache, TimeSpan duration)
+        public SecretRepositoryCache(ISecretRepository repository, IDistributedCache cache, TimeSpan duration)
         {
             this.repository = repository;
             this.cache = cache;
             this.duration = duration;
+            // TODO: Need to investigate how the scoping of this works
+            //this.protector = dataProtectionProvider.CreateProtector("clientsecret");
         }
 
         /// <summary>
@@ -55,17 +60,25 @@ namespace Meerkat.Security.Authentication
 
         private string Get(string clientId)
         {
-            return (string)cache.Get(Key(clientId), Region);
+            var result = cache.GetString(Key(clientId));
+            return result;
+            //return string.IsNullOrEmpty(result) ? result : protector.Unprotect(result);
         }
 
         private void Cache(string clientId, string secret, DateTimeOffset absoluteExpiration)
         {
-            cache.Set(Key(clientId), secret, absoluteExpiration, Region);
+            var key = Key(clientId);
+            var data = secret;//protector.Protect(secret);
+            var options = new DistributedCacheEntryOptions
+            {
+                AbsoluteExpiration = absoluteExpiration
+            };
+            Task.Run(() => cache.SetStringAsync(key, data, options));
         }
 
         private string Key(string clientId)
         {
-            return clientId;
+            return $"{CacheRegion}:{clientId}";
         }
     }
 }

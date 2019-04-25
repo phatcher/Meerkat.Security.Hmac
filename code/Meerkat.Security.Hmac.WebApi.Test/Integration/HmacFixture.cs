@@ -29,9 +29,13 @@ namespace Meerkat.Hmac.Test.Integration
 
                 var result = await response.Content.ReadAsStringAsync();
                 Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
-                Assert.That((int)response.StatusCode, Is.EqualTo(200), "Status code differs");
-                Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
-                Assert.That(result, Is.EqualTo("[\"C\",\"D\"]"), "Content differs");
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That((int)response.StatusCode, Is.EqualTo(200), "Status code differs");
+                    Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
+                    Assert.That(result, Is.EqualTo("[\"C\",\"D\"]"), "Content differs");
+                });
             }
         }
 
@@ -47,9 +51,12 @@ namespace Meerkat.Hmac.Test.Integration
 
                 var result = await response.Content.ReadAsStringAsync();
                 Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
-                Assert.That((int)response.StatusCode, Is.EqualTo(200), "Status code differs");
-                Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
-                Assert.That(result, Is.EqualTo("[\"A\",\"B\"]"), "Content differs");
+                Assert.Multiple(() =>
+                {
+                    Assert.That((int) response.StatusCode, Is.EqualTo(200), "Status code differs");
+                    Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
+                    Assert.That(result, Is.EqualTo("[\"A\",\"B\"]"), "Content differs");
+                });
             }
         }
 
@@ -65,9 +72,12 @@ namespace Meerkat.Hmac.Test.Integration
 
                 var result = await response.Content.ReadAsStringAsync();
                 Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
-                Assert.That((int)response.StatusCode, Is.EqualTo(200), "Status code differs");
-                Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
-                Assert.That(result, Is.EqualTo("[\"A\",\"B\"]"), "Content differs");
+                Assert.Multiple(() =>
+                {
+                    Assert.That((int) response.StatusCode, Is.EqualTo(200), "Status code differs");
+                    Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
+                    Assert.That(result, Is.EqualTo("[\"A\",\"B\"]"), "Content differs");
+                });
             }
         }
 
@@ -80,8 +90,11 @@ namespace Meerkat.Hmac.Test.Integration
                 var response = await client.SendAsync(request);
 
                 Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
-                Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
-                Assert.That(response.ReasonPhrase, Is.EqualTo("Unauthorized"), "Reason phrase differs");
+                Assert.Multiple(() =>
+                {
+                    Assert.That((int) response.StatusCode, Is.EqualTo(401), "Status code differs");
+                    Assert.That(response.ReasonPhrase, Is.EqualTo("Unauthorized"), "Reason phrase differs");
+                });
             }
         }
 
@@ -97,9 +110,12 @@ namespace Meerkat.Hmac.Test.Integration
 
                 var result = await response.Content.ReadAsStringAsync();
                 Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
-                Assert.That((int)response.StatusCode, Is.EqualTo(200), "Status code differs");
-                Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
-                Assert.That(result, Is.EqualTo("1"), "Content differs");
+                Assert.Multiple(() =>
+                {
+                    Assert.That((int)response.StatusCode, Is.EqualTo(200), "Status code differs");
+                    Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
+                    Assert.That(result, Is.EqualTo("1"), "Content differs");
+                });
             }
         }
 
@@ -115,9 +131,12 @@ namespace Meerkat.Hmac.Test.Integration
 
                 var result = await response.Content.ReadAsStringAsync();
                 Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
-                Assert.That((int)response.StatusCode, Is.EqualTo(200), "Status code differs");
-                Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
-                Assert.That(result, Is.EqualTo("1"), "Content differs");
+                Assert.Multiple(() =>
+                {
+                    Assert.That((int) response.StatusCode, Is.EqualTo(200), "Status code differs");
+                    Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
+                    Assert.That(result, Is.EqualTo("1"), "Content differs");
+                });
             }
         }
 
@@ -130,8 +149,11 @@ namespace Meerkat.Hmac.Test.Integration
                 var response = await client.SendAsync(request);
 
                 Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
-                Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
-                Assert.That(response.ReasonPhrase, Is.EqualTo("Unauthorized"), "Reason phrase differs");
+                Assert.Multiple(() =>
+                {
+                    Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
+                    Assert.That(response.ReasonPhrase, Is.EqualTo("Unauthorized"), "Reason phrase differs");
+                });
             }
         }
 
@@ -148,8 +170,11 @@ namespace Meerkat.Hmac.Test.Integration
                 var response = await client.SendAsync(request);
 
                 Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
-                Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
-                Assert.That(response.ReasonPhrase, Is.EqualTo("Unauthorized"), "Reason phrase differs");
+                Assert.Multiple(() =>
+                {
+                    Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
+                    Assert.That(response.ReasonPhrase, Is.EqualTo("Unauthorized"), "Reason phrase differs");
+                });
             }
         }
 
@@ -165,8 +190,11 @@ namespace Meerkat.Hmac.Test.Integration
                 var response = await client.SendAsync(request);
 
                 Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
-                Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
-                Assert.That(response.ReasonPhrase, Is.EqualTo("Invalid signature"), "Reason phrase differs");
+                Assert.Multiple(() =>
+                {
+                    Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
+                    Assert.That(response.ReasonPhrase, Is.EqualTo("Invalid signature"), "Reason phrase differs");
+                });
             }
         }
 
@@ -183,8 +211,11 @@ namespace Meerkat.Hmac.Test.Integration
                 var response = await client.SendAsync(request);
 
                 Console.Out.WriteLine("Status: {0} - {1}", response.StatusCode, response.ReasonPhrase);
-                Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
-                Assert.That(response.ReasonPhrase, Is.EqualTo("Missing credentials"), "Reason phrase differs");
+                Assert.Multiple(() =>
+                {
+                    Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
+                    Assert.That(response.ReasonPhrase, Is.EqualTo("Missing credentials"), "Reason phrase differs");
+                });
             }
         }
 
@@ -204,8 +235,11 @@ namespace Meerkat.Hmac.Test.Integration
                 request = RequestMessage("/api/values/secure", "1234");
                 response = await client.SendAsync(request);
 
-                Assert.That((int)response.StatusCode, Is.EqualTo(200), "Status code differs");
-                Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
+                Assert.Multiple(() =>
+                {
+                    Assert.That((int)response.StatusCode, Is.EqualTo(200), "Status code differs");
+                    Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
+                });
             }
         }
 
@@ -224,8 +258,11 @@ namespace Meerkat.Hmac.Test.Integration
                 request.Headers.Date = DateTimeOffset.UtcNow.AddHours(-2);
                 var response = await client.SendAsync(request);
 
-                Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
-                Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
+                Assert.Multiple(() =>
+                {
+                    Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
+                    Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
+                });
             }
         }
 
@@ -240,8 +277,11 @@ namespace Meerkat.Hmac.Test.Integration
                 request.Headers.Date = DateTimeOffset.UtcNow.AddHours(2);
                 var response = await client.SendAsync(request);
 
-                Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
-                Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
+                Assert.Multiple(() =>
+                {
+                    Assert.That((int)response.StatusCode, Is.EqualTo(401), "Status code differs");
+                    Assert.That(response.ReasonPhrase, Is.EqualTo("OK"), "Reason phrase differs");
+                });
             }
         }
 
@@ -275,7 +315,7 @@ namespace Meerkat.Hmac.Test.Integration
             // Enough that we can sign HMAC messages
             Container = new UnityContainer();
             Sample.Web.UnityConfig.RegisterHmacCore(Container);
-            Container.RegisterType<HmacSigningHandler, HmacSigningHandler>();
+            Container.RegisterType<HmacSigningHandler>();
 
             // Wipe down the server container
             Sample.Web.Startup.Reset();

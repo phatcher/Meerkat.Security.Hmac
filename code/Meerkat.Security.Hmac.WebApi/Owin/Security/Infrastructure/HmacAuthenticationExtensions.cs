@@ -32,7 +32,7 @@ namespace Meerkat.Owin.Security.Infrastructure
         /// <param name="serviceProvider"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        [Obsolete("Use version with IDepdedencyResolver so we get scoped dependencies")]
+        [Obsolete("Use version with IDependencyResolver so we get scoped dependencies")]
         public static IAppBuilder UseHmacAuthentication(this IAppBuilder app, IServiceProvider serviceProvider, HmacAuthenticationOptions options = null)
         {
             if (options == null)

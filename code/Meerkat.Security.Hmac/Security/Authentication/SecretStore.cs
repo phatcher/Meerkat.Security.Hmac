@@ -3,7 +3,7 @@
 namespace Meerkat.Security.Authentication
 {
     /// <summary>
-    /// Simple store for client secrets, useful for client side where we might not have a datatabase.
+    /// Simple store for client secrets, useful for client side where we might not have a database.
     /// </summary>
     /// <remarks>
     /// Not "secure" in that the secrets are held in memory in clear.
@@ -25,8 +25,7 @@ namespace Meerkat.Security.Authentication
         {
             if (string.IsNullOrEmpty(secret))
             {
-                string value;
-                secrets.TryRemove(clientId, out value);
+                secrets.TryRemove(clientId, out var value);
             }
             else
             {
@@ -37,8 +36,7 @@ namespace Meerkat.Security.Authentication
         /// <copydoc cref="ISecretRepository.ClientSecret" />
         public string ClientSecret(string clientId)
         {
-            string secret;
-            secrets.TryGetValue(clientId, out secret);
+            secrets.TryGetValue(clientId, out var secret);
 
             return secret;
         }

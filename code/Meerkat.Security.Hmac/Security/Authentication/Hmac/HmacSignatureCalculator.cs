@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+
 using Meerkat.Logging;
 
 namespace Meerkat.Security.Authentication.Hmac
@@ -13,11 +14,8 @@ namespace Meerkat.Security.Authentication.Hmac
     {
         private static readonly ILog Logger = LogProvider.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        // TODO: Inject this via either constructor 
-        private const string HmacScheme = "SHA256";
-
         /// <copydoc cref="ISignatureCalculator.Signature" />
-        public string Signature(string secret, string value)
+        public string Signature(string secret, string value, string scheme = "SHA256")
         {
             if (Logger.IsDebugEnabled())
             {
@@ -33,7 +31,7 @@ namespace Meerkat.Security.Authentication.Hmac
                 Logger.DebugFormat("Value '{0}'", BitConverter.ToString(valueBytes));
             }
            
-            using (var hmac = HmacProvider(secretBytes, HmacScheme))
+            using (var hmac = HmacProvider(secretBytes, scheme))
             {
                 var hash = hmac.ComputeHash(valueBytes);
                 signature = Convert.ToBase64String(hash);
@@ -41,7 +39,7 @@ namespace Meerkat.Security.Authentication.Hmac
 
             if (Logger.IsDebugEnabled())
             {
-                Logger.DebugFormat("Signature {0} : {1}", HmacScheme, signature);
+                Logger.DebugFormat("Signature {0} : {1}", scheme, signature);
             }
 
             return signature;
@@ -53,7 +51,10 @@ namespace Meerkat.Security.Authentication.Hmac
             {
                 case "MD5":
                 case "SHA1":
-                    throw new NotSupportedException(string.Format("Hash '{0}' is not secure and is not supported", value));
+                    throw new NotSupportedException($"Hash '{value}' is not secure and is not supported");
+
+                case "SHA256":
+                    return new HMACSHA256(secret);
 
                 case "SHA384":
                     return new HMACSHA384(secret);
@@ -62,7 +63,7 @@ namespace Meerkat.Security.Authentication.Hmac
                     return new HMACSHA512(secret);
 
                 default:
-                    return new HMACSHA256(secret);
+                    throw new NotSupportedException($"Hash '{value}' is unknown and is not supported");
             }
         }
     }
