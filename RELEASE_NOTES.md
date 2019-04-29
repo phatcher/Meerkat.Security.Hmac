@@ -1,6 +1,7 @@
-### 4.0.0 (2019-04-26)
+### 4.0.0 (2019-04-29)
 * Full support for ASP.NET Core
 * Remove hardcoding of SHA256, can now use SHA256, SHA384 or SHA512
+* Introduce ISignatureCache so we can have different NET/Core implementations
 * Breaking change - ISignatureCalculator now takes optional scheme parameter
 * Breaking change - HmacSigningHandler now takes optional scheme parameter
 * Breaking change - HmacAuthenticator, constructor argument renamed

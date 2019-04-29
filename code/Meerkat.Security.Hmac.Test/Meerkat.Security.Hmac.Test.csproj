@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net451;net462;net472;netcoreapp2.2</TargetFrameworks>
+    <TargetFrameworks>net451;net462;net472;netcoreapp2.0</TargetFrameworks>
     <RootNamespace>Meerkat.Hmac.Test</RootNamespace>
 	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	<OutputPath>$(SolutionDir)/build/$(Configuration)/$(AssemblyName)/$(TargetFramework)/</OutputPath>
@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Microsoft.Net.Test.Sdk" Version="15.9.0" />
-    <PackageReference Include="Microsoft.Owin.Testing" Version="4.0.1" Condition="'$(TargetFramework)' != 'netcoreapp22'" />
+    <PackageReference Include="Microsoft.Owin.Testing" Version="4.0.1" Condition="'$(TargetFramework)' != 'netcoreapp2.0'" />
     <PackageReference Include="Moq" Version="4.10.1" />
     <PackageReference Include="NCheck" Version="3.0.0" />
     <PackageReference Include="NUnit" Version="3.11.0" />

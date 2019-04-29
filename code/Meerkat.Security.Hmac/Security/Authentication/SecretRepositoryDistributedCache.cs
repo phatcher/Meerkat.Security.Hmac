@@ -12,7 +12,8 @@ namespace Meerkat.Security.Authentication
     /// Useful for avoiding a database call on every secret retrieve.
     /// </para>
     /// </summary>
-    public class SecretRepositoryCache : ISecretRepository
+    /// <remarks>Data is stored in the cache in plaintext, for encryption use <see cref="SecretRepositoryCache" /> with a suitable configured Polly CachePolicy.</remarks>
+    public class SecretRepositoryDistributedCache : ISecretRepository
     {
         private const string CacheRegion = "clientsecret";
 
@@ -21,12 +22,12 @@ namespace Meerkat.Security.Authentication
         private readonly TimeSpan duration;
 
         /// <summary>
-        /// Creates a new instance of the <see cref="SecretRepositoryCache"/> class.
+        /// Creates a new instance of the <see cref="SecretRepositoryDistributedCache"/> class.
         /// </summary>
         /// <param name="repository">Underlying repository with the secrets</param>
         /// <param name="cache">Cache to use</param>
         /// <param name="duration">Duration to cache after acquisition</param>
-        public SecretRepositoryCache(ISecretRepository repository, IDistributedCache cache, TimeSpan duration)
+        public SecretRepositoryDistributedCache(ISecretRepository repository, IDistributedCache cache, TimeSpan duration)
         {
             this.repository = repository;
             this.cache = cache;
@@ -58,7 +59,6 @@ namespace Meerkat.Security.Authentication
         {
             var result = cache.GetString(Key(clientId));
             return result;
-            //return string.IsNullOrEmpty(result) ? result : protector.Unprotect(result);
         }
 
         private void Cache(string clientId, string secret, DateTimeOffset absoluteExpiration)
