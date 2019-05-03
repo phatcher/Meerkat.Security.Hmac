@@ -8,10 +8,7 @@ using Microsoft.Extensions.Caching.Memory;
 namespace Meerkat.Security.Authentication
 {
     /// <summary>
-    /// Caching layer over a <see cref="ISecretRepository"/> using <see cref="IMemoryCache"/>
-    /// <para>
-    /// Useful for avoiding a database call on every secret retrieve.
-    /// </para>
+    /// Caching layer over a <see cref="ISecretRepository"/> using <see cref="IMemoryCache"/>>
     /// </summary>
     public class SecretRepositoryMemoryCache : ISecretRepository
     {
@@ -42,37 +39,12 @@ namespace Meerkat.Security.Authentication
         /// <remarks>We don't do any locking internally, it's a case of last one wins but all that would happen is that the cache duration would be increased slightly.</remarks>
         public string ClientSecret(string clientId)
         {
-            // TODO: Flip to GetOrCreateAtomic once ready
-            var secret = Get(clientId);
-            if (secret == null)
+            var key = CacheRegion.CacheKey(clientId);
+            return cache.GetOrCreateAtomic(key, entry =>
             {
-                secret = repository.ClientSecret(clientId);
-                if (!string.IsNullOrEmpty(secret))
-                {
-                    Cache(clientId, secret, DateTimeOffset.UtcNow.Add(duration));
-                }
-            }
-
-            return secret;
-        }
-
-        private string Get(string clientId)
-        {
-            var result = cache.Get<string>(Key(clientId));
-            return result;
-        }
-
-        private void Cache(string clientId, string secret, DateTimeOffset absoluteExpiration)
-        {
-            var key = Key(clientId);
-            var entry = cache.CreateEntry(key);
-            entry.AbsoluteExpiration = absoluteExpiration;
-            entry.Value = secret;
-        }
-
-        private string Key(string clientId)
-        {
-            return CacheRegion.CacheKey(clientId);
+                entry.AbsoluteExpirationRelativeToNow = duration;
+                return repository.ClientSecret(clientId);
+            });
         }
     }
 }

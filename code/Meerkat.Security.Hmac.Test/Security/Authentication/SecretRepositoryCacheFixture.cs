@@ -10,6 +10,9 @@ using Moq;
 
 using NUnit.Framework;
 
+using Polly;
+using Polly.Caching;
+
 namespace Meerkat.Hmac.Test.Security.Authentication
 {
     [TestFixture]
@@ -19,8 +22,10 @@ namespace Meerkat.Hmac.Test.Security.Authentication
         public void CacheMiss()
         {
             var cache = new Mock<IDistributedCache>(MockBehavior.Strict);
+            var cacheProvider = new Mock<IAsyncCacheProvider>(MockBehavior.Strict);
+            var cachePolicy = Policy.CacheAsync(cacheProvider.Object, new Mock<ITtlStrategy>().Object);
             var repository = new Mock<ISecretRepository>(MockBehavior.Strict);
-            var service = new SecretRepositoryCache(repository.Object, cache.Object, new TimeSpan(1));
+            var service = new SecretRepositoryCache(repository.Object, cachePolicy);
 
             // NB Have to use the underlying methods not the helpful extensions
             cache.Setup(x => x.Get("clientsecret:A")).Returns((byte[]) null);
@@ -37,8 +42,10 @@ namespace Meerkat.Hmac.Test.Security.Authentication
         public void CacheHit()
         {
             var cache = new Mock<IDistributedCache>(MockBehavior.Strict);
+            var cacheProvider = new Mock<IAsyncCacheProvider>(MockBehavior.Strict);
+            var cachePolicy = Policy.CacheAsync(cacheProvider.Object, new Mock<ITtlStrategy>().Object);
             var repository = new Mock<ISecretRepository>(MockBehavior.Strict);
-            var service = new SecretRepositoryCache(repository.Object, cache.Object, new TimeSpan(1));
+            var service = new SecretRepositoryCache(repository.Object, cachePolicy);
 
             // NB Have to use the underlying methods not the helpful extensions
             cache.Setup(x => x.Get("clientsecret:A")).Returns(Encoding.UTF8.GetBytes("B"));
@@ -52,8 +59,10 @@ namespace Meerkat.Hmac.Test.Security.Authentication
         public void EmptySecretNotCached()
         {
             var cache = new Mock<IDistributedCache>(MockBehavior.Strict);
+            var cacheProvider = new Mock<IAsyncCacheProvider>(MockBehavior.Strict);
+            var cachePolicy = Policy.CacheAsync(cacheProvider.Object, new Mock<ITtlStrategy>().Object);
             var repository = new Mock<ISecretRepository>(MockBehavior.Strict);
-            var service = new SecretRepositoryCache(repository.Object, cache.Object, new TimeSpan(1));
+            var service = new SecretRepositoryCache(repository.Object, cachePolicy);
 
             // NB Have to use the underlying methods not the helpful extensions
             cache.Setup(x => x.Get("clientsecret:A")).Returns((byte[]) null);
