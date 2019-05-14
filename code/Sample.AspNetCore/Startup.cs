@@ -23,10 +23,12 @@ namespace Sample.AspNetCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // See https://stackoverflow.com/questions/45695382/how-do-i-setup-multiple-auth-schemes-in-asp-net-core-2-0
+            // and https://github.com/aspnet/Security/issues/1469
             services.AddAuthentication(sharedOptions =>
             {
-                sharedOptions.DefaultScheme = HmacAuthentication.AuthenticationScheme;
-                sharedOptions.DefaultChallengeScheme = HmacAuthentication.AuthenticationScheme;
+                sharedOptions.DefaultScheme = "smart";
+                sharedOptions.DefaultChallengeScheme = "smart";
             })
             .AddPolicyScheme("smart", "JWT or HMAC", options =>
             {
