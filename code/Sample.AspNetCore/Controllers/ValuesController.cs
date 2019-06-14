@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Sample.AspNetCore.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     public class ValuesController : Controller
     {

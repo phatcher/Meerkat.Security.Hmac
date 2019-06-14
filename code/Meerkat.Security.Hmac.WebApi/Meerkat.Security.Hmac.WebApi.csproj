@@ -14,7 +14,7 @@
     <PackageLicenseUrl>http://opensource.org/licenses/mit-license.php</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/phatcher/Meerkat.Security.Hmac</PackageProjectUrl>
     <PackageRequireLicenceAcceptance>False</PackageRequireLicenceAcceptance>
-    <PackageTags>AspNet WebApi AspNetWebApi HMAC Security</PackageTags>
+    <PackageTags>AspNet WebApi AspNetWebApi HMAC Security Authentication</PackageTags>
     <RepositoryUrl>https://github.com/phatcher/Meerkat.Security.Hmac</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Authors>Paul Hatcher</Authors>

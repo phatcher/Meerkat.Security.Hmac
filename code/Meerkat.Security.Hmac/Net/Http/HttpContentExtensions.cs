@@ -29,13 +29,7 @@ namespace Meerkat.Net.Http
         /// <returns></returns>
         public static async Task<bool> IsMd5Valid(this HttpContent content)
         {
-            if (content == null)
-            {
-                // No content so we are correct.
-                return true;
-            }
-
-            var hashHeader = content.Headers.ContentMD5;
+            var hashHeader = content?.Headers.ContentMD5;
             if (hashHeader == null)
             {
                 // TODO: Should we always require one if we have non-null content?
